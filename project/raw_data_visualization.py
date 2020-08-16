@@ -98,6 +98,23 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
     :param extent: given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]
     """
 
+    if type(date) != str:
+        raise TypeError("Date should be a string in format YYYYMMDD!")
+    if type(hour) != int:
+        raise TypeError("Hour should be one of integers: 0, 6, 12, 18!")
+    if type(forecast) != int:
+        raise TypeError("Forecast should be one of integers in range 0-392!")
+
+    if len(date) != 8:
+        raise ValueError("Date should be a string in format YYYYMMDD!")
+    if hour not in [0, 6, 12, 18]:
+        raise ValueError("Hour should be one of integers: 0, 6, 12, 18!")
+    if forecast not in [num for num in range(0, 393)]:
+        raise ValueError("Forecast should be one of integers in range 0-392!")
+    if len(extent) != 4:
+        raise ValueError("Extent should be a List of four integers!")
+
+
     left_lon = extent[0]
     right_lon = extent[1]
     top_lat = extent[2]
@@ -264,5 +281,5 @@ def gfs_download_newest_data():
 if __name__ == '__main__':
     data = gfs_prepare_raw_data_as_array("20200815", 12, 0, BANDS["CAPE surface"])
     fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, "CAPE surface")
-    fig.savefig('test8.png')
+    fig.savefig('test8.png', bbox_inches='tight')
     # gfs_download_newest_data()
