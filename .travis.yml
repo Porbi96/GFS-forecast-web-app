@@ -18,7 +18,7 @@ install:
   - conda info -a
 
   - conda install -c conda-forge gdal
-  - conda install -c anaconda basemap
+  - conda install -c conda-forge basemap
   - conda install pip
   - pip install -r requirements.txt
 script:
