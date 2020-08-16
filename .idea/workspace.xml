@@ -13,8 +13,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project/raw_data_visualization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="105" column="77" selection-start-line="105" selection-start-column="77" selection-end-line="105" selection-end-column="77" />
+            <state relative-caret-position="311">
+              <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -22,11 +22,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="15" column="44" lean-forward="true" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+            <state relative-caret-position="415">
+              <caret line="28" selection-start-line="28" selection-end-line="28" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -34,11 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project/web_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+            <state relative-caret-position="107">
+              <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -69,12 +69,12 @@
         <option value="$PROJECT_DIR$/web_app.py" />
         <option value="$PROJECT_DIR$/raw_data_visualization.py" />
         <option value="$PROJECT_DIR$/tests/test_raw_data_visualization.py" />
-        <option value="$PROJECT_DIR$/project/raw_data_visualization.py" />
         <option value="$PROJECT_DIR$/tests/tests.py" />
+        <option value="$PROJECT_DIR$/project/raw_data_visualization.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="951" />
     <option name="width" value="978" />
     <option name="height" value="1039" />
@@ -124,7 +124,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.pytest in tests.py">
+  <component name="RunManager" selected="Python.web_app (1)">
+    <configuration name="raw_data_visualization (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GFS-forecast-web-app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project/raw_data_visualization.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="raw_data_visualization" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GFS-forecast-web-app" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -138,6 +159,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\Users\Kuba\Desktop\Projekt_GFS\GFS-forecast-web-app\scripts\raw_data_visualization.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="web_app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GFS-forecast-web-app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project/web_app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -184,8 +226,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest in tests.py" />
+        <item itemvalue="Python.web_app (1)" />
         <item itemvalue="Python.web_app" />
+        <item itemvalue="Python.raw_data_visualization (1)" />
+        <item itemvalue="Python tests.pytest in tests.py" />
         <item itemvalue="Python.raw_data_visualization" />
       </list>
     </recent_temporary>
@@ -204,24 +248,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 02m 26s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 03m 09s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 03m 19s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 03m 33s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 06m 10s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 06m 23s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 06m 56s.xml">
       <configuration name="pytest in tests.py" configurationId="tests" />
     </history-entry>
@@ -234,17 +260,33 @@
     <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 09m 13s.xml">
       <configuration name="pytest in tests.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 10m 42s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 12m 56s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 17h 16m 27s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 17h 17m 04s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 17h 17m 38s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 17h 20m 18s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4092219" visible="true" weight="0.15069398" />
-      <window_info id="Structure" order="1" sideWeight="0.5907781" side_tool="true" visible="true" weight="0.15069398" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4793713" visible="true" weight="0.15302013" />
+      <window_info id="Favorites" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5084986" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27903682" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -256,35 +298,36 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Structure" order="3" sideWeight="0.5206287" side_tool="true" visible="true" weight="0.15033557" />
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/project/web_app.py">
+    <entry file="file://$PROJECT_DIR$/tests/tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+        <state relative-caret-position="415">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project/raw_data_visualization.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="105" column="77" selection-start-line="105" selection-start-column="77" selection-end-line="105" selection-end-column="77" />
+        <state relative-caret-position="311">
+          <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tests.py">
+    <entry file="file://$PROJECT_DIR$/project/web_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="15" column="44" lean-forward="true" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+        <state relative-caret-position="107">
+          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
