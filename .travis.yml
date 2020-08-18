@@ -5,6 +5,8 @@ before_install:
   - sudo add-apt-repository --yes ppa:ubuntugis/ppa
   - sudo apt-get --quiet update
   - sudo apt-get install --yes libgdal-dev gdal-bin
+  - export CPLUS_INCLUDE_PATH=/usr/include/gdal
+  - export C_INCLUDE_PATH=/usr/include/gdal
 install:
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
