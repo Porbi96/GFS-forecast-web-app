@@ -1,5 +1,6 @@
 import os
 import re
+import time
 
 os.environ["PROJ_LIB"] = "C:\\Python\\Anaconda\\Library\\share"
 import requests, gdal, csv
@@ -14,12 +15,14 @@ EXTENT_POLAND = [13, 25, 56, 48]
 
 BANDS = {
     "Wind gust ground": 11,        # [m/s]
-    "u-component 250hPa": 146,     # [m/s]
-    "v-component 250hPa": 147,     # [m/s]
+    "Wind 250hPa": [146, 147],
+    # "u-component 250hPa": 146,     # [m/s]
+    # "v-component 250hPa": 147,     # [m/s]
     "Temperature 2m": 415,         # ['C]
     "Dew point 2m": 417,           # ['C]
-    "u-component 10m": 420,        # [m/s]
-    "v-component 10m": 421,        # [m/s]
+    "Wind 10m": [420, 421],
+    # "u-component 10m": 420,        # [m/s]
+    # "v-component 10m": 421,        # [m/s]
     "Precipitation ground": 424,   # [kg/m^2 s]
     "LI surface": 432,             # ['C]
     "CAPE surface": 433,           # [J/kg]
@@ -27,13 +30,29 @@ BANDS = {
     "Pressure sea lvl": 520        # [Pa]
 }
 
+BANDS_NONZERO = {
+    "Wind gust ground": 11,  # [m/s]
+    "Wind 250hPa": [149, 150],
+    # "u-component 250hPa": 146,     # [m/s]
+    # "v-component 250hPa": 147,     # [m/s]
+    "Temperature 2m": 435,  # ['C]
+    "Dew point 2m": 437,  # ['C]
+    "Wind 10m": [442, 443],
+    # "u-component 10m": 420,        # [m/s]
+    # "v-component 10m": 421,        # [m/s]
+    "Precipitation ground": 447,  # [kg/m^2 s]
+    "LI surface": 473,  # ['C]
+    "CAPE surface": 474,  # [J/kg]
+    "CIN surface": 475,  # [J/kg]
+    "Pressure sea lvl": 586  # [Pa]
+}
+
 CHARTS = {
     "Wind gust ground": "Wind gust ground",
-    "Wind 250hPa": ["u-component 250hPa", "v-component 250hPa"],
+    "Wind 250hPa": "Wind 250hPa",
     "Temperature 2m": "Temperature 2m",
     "Dew point 2m": "Dew point 2m",
-    "Wind 10m": ["u-component 10m", "v-component 10m"],
-    "Wind 10m vis": "Wind 10m",
+    "Wind 10m": "Wind 10m",
     "Precipitation ground": "Precipitation ground",
     "LI surface": "LI surface",
     "CAPE surface": "CAPE surface",
@@ -48,46 +67,40 @@ FORECAST_HOURS = [0,   6,   12,  18,  24,  30,  36,  42,  48,  54,
                   360, 372, 384]
 
 
-def choose_levels(band: str):
+def choose_levels(chart: str):
     """
-    Chooses levels and cmap for visualization
-    :param band: band name
-    :return: levels and colormap
+    Chooses levels and cmap for visualization. User can specify these parameters here.
+    :param chart: chart name
+    :return: levels and colormap for specified chart
     """
     arrange_levels = {
-        "Wind gust ground": np.arange(5, 50, 1),
-        # "u-component 250hPa": 146,
-        # "v-component 250hPa": 147,
-        "Temperature 2m": np.arange(-30, 42, 1),
-        "Dew point 2m": np.arange(-30, 42, 1),
-        # "u-component 10m": np.arange(0, 35, 1),
-        # "v-component 10m": np.arange(0, 35, 1),
-        "Wind 10m": np.arange(1, 30, 1),
-        "Precipitation ground": np.arange(0, 100, 1),
-        "LI surface": np.arange(-11, 12, 0.5),
-        "CAPE surface": np.arange(100, 4000, 100),
-        "CIN surface": np.arange(-300, 0, 5),
-        "Pressure sea lvl": np.arange(900, 1150, 2)
+        "Wind gust ground":     np.arange(1, 50, 1),        # [m/s]
+        "Wind 250hPa":          np.arange(1, 70, 2),        # [m/s]
+        "Temperature 2m":       np.arange(-30, 42, 1),      # ['C]
+        "Dew point 2m":         np.arange(-30, 42, 1),      # ['C]
+        "Wind 10m":             np.arange(1, 50, 1),        # [m/s]
+        "Precipitation ground": np.arange(0, 100, 1),       # [kg/m^2 s]
+        "LI surface":           np.arange(-11, 12, 0.5),    # ['C]
+        "CAPE surface":         np.arange(100, 4000, 100),  # [J/kg]
+        "CIN surface":          np.arange(-300, 0, 5),      # [J/kg]
+        "Pressure sea lvl":     np.arange(950, 1150, 2)     # [Pa]
     }
 
     arrange_cmap = {
-        "Wind gust ground": np.arange(5, 50, 1),    # TODO: set correct colormap
-        # "u-component 250hPa": 146,
-        # "v-component 250hPa": 147,
-        "Temperature 2m": 'jet',
-        "Dew point 2m": 'jet',
-        # "u-component 10m": np.arange(0, 35, 1),
-        # "v-component 10m": np.arange(0, 35, 1),
-        "Wind 10m": 'Blues',
+        "Wind gust ground":     'Blues',
+        "Wind 250hPa":          'BuPu',
+        "Temperature 2m":       'jet',
+        "Dew point 2m":         'jet',
+        "Wind 10m":             'Blues',
         "Precipitation ground": 'BuPu',
-        "LI surface": 'RdBu_r',
-        "CAPE surface": 'PuRd',
-        "CIN surface": 'BuPu_r',
-        "Pressure sea lvl": 'cool_r'
+        "LI surface":           'RdBu_r',
+        "CAPE surface":         'PuRd',
+        "CIN surface":          'BuPu_r',
+        "Pressure sea lvl":     'cool_r'
     }
 
-    levels = arrange_levels[band]
-    cmap = arrange_cmap[band]
+    levels = arrange_levels[chart]
+    cmap = arrange_cmap[chart]
 
     return levels, cmap
 
@@ -113,9 +126,9 @@ def gfs_download_newest_data():
 
     print("Getting the newest data...")
     print("Finding date and hour...")
+
     r = requests.get(url)
     urls = re.findall(regex, r.content.decode('utf-8'))
-
     url = urls[0][0]
     date = url[-8::]
 
@@ -128,12 +141,15 @@ def gfs_download_newest_data():
     path = os.path.join(DIRNAME, "data/gfs/{}/{:02}z".format(date, hour))
     if os.path.isdir(path) and len(os.listdir(path)) == len(FORECAST_HOURS):
         print("Data is already downloaded!")
-        return
+        is_new_data = False
+    else:
+        print("Downloading data... It might take some minutes.")
+        for forecast in FORECAST_HOURS:
+            gfs_get_raw_data(date, hour, forecast, EXTENT_POLAND)
+        print("Data downloaded succesfully!")
+        is_new_data = True;
 
-    print("Downloading data...")
-    for forecast in FORECAST_HOURS:
-        gfs_get_raw_data(date, hour, forecast, EXTENT_POLAND)
-    print("Data downloaded.")
+    return date, hour, is_new_data
 
 
 def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
@@ -217,6 +233,7 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     :param hour: given hour (UTC) as integer (available: 0, 6, 12, 18)
     :param forecast: forecast hour as integer (available integers 0-392)
     :param band: number of band to indicate which data should be prepared (ref: bands_excel.xlsx) TODO: Update doc
+    :param chart:
     :return prepared data matrix (np.array)
     """
     factor = 50
@@ -240,24 +257,31 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     path = os.path.join(DIRNAME, "data/gfs/{}/{:02}z".format(date, hour))
     filename = "gfs.pgrb2.0p25.f{:03}".format(forecast)
 
+    print("Opening file: {file}".format(file=filename))
     grib = gdal.Open(os.path.join(path, filename))
 
+    print("Reading {} data.".format(chart))
     if chart in ["Wind 250hPa", "Wind 10m"]:
-        data1 = grib.GetRasterBand(BANDS[CHARTS[chart][0]])
-        data2 = grib.GetRasterBand(BANDS[CHARTS[chart][1]])
+        if forecast == 0:
+            data1 = grib.GetRasterBand(BANDS[CHARTS[chart]][0])
+            data2 = grib.GetRasterBand(BANDS[CHARTS[chart]][1])
+        else:
+            data1 = grib.GetRasterBand(BANDS_NONZERO[CHARTS[chart]][0])
+            data2 = grib.GetRasterBand(BANDS_NONZERO[CHARTS[chart]][1])
         data = (data1.ReadAsArray())**2 + (data2.ReadAsArray())**2
         data = np.sqrt(data)
-        print("Reading {} data.".format(chart))
         print("Band name:   {name}.\n".format(name=data1.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data1.GetDescription()))
         print("Band name:   {name}.\n".format(name=data2.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data2.GetDescription()))
     else:
-        data = grib.GetRasterBand(BANDS[chart])
+        if forecast == 0:
+            data = grib.GetRasterBand(BANDS[chart])
+        else:
+            data = grib.GetRasterBand(BANDS_NONZERO[chart])
         print("Band name:   {name}.\n".format(name=data.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data.GetDescription()))
         data = data.ReadAsArray()
-
 
     # TODO: find faster solution than convolve()
     return convolve(matrix_resize(data, factor), np.ones([factor, factor])/(factor**2))
@@ -287,7 +311,7 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
     bmap = Basemap(llcrnrlon=left_lon, urcrnrlon=right_lon, llcrnrlat=bottom_lat, urcrnrlat=top_lat, projection='cyl', resolution='i')
     bmap.drawcoastlines(linewidth=1.5)
     bmap.drawcountries(linewidth=1.5)
-    bmap.readshapefile('../POL_adm1', 'poland', linewidth=1.0)
+    bmap.readshapefile('../shapefiles/POL_adm1', 'poland', linewidth=1.0)
 
     plt.contourf(xx[::-1], yy[::-1], data, alpha=0.9, cmap=cmap, levels=levels)
     S2 = plt.contour(xx[::-1], yy[::-1], data, alpha=0.8, colors='black', linewidths=0.5, levels=levels)
@@ -310,11 +334,29 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
 # print("Execution time: {}".format(time.time()-start_time))
 
 if __name__ == '__main__':
-    data = gfs_prepare_raw_data_as_array("20200815", 12, 0, "Wind 10m")
-    try:
-        fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, "Wind 10m vis")
-    except NotImplementedError:
-        print("Not implemented yet.")
-    else:
-        fig.savefig('test8.png', bbox_inches='tight')
-    # gfs_download_newest_data()
+    # gfs_scan_bands("{dir}/data/gfs/20200815/12z/gfs.pgrb2.0p25.f042".format(dir=DIRNAME))
+    # data = gfs_prepare_raw_data_as_array("20200815", 12, 6, CHARTS["Temperature 2m"])
+    # fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
+    # tempdir = "{dir}/data/pics/20200815/12z/006".format(dir=DIRNAME)
+    # if not os.path.exists(tempdir):
+    #     os.makedirs(tempdir)
+    # fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
+
+    while True:
+        # 1. Download the newest data from NOAA servers
+        date, hour, is_new_data = gfs_download_newest_data()
+
+        is_new_data = True
+        # 2. Prepare data for each chart, build charts and save .png pics
+        if is_new_data:
+            for key in CHARTS:
+                for forecast in FORECAST_HOURS:
+                    tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
+                    data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
+                    fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
+
+                    if not os.path.exists(tempdir):
+                        os.makedirs(tempdir)
+                    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
+
+        time.sleep(30*60)
