@@ -16,6 +16,8 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
+  
+  - sudo apt-get install libgdal-dev gdal-bin
 
   - conda install -c conda-forge gdal
   - conda install -c conda-forge basemap
