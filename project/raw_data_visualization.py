@@ -2,10 +2,9 @@ import os
 import re
 
 os.environ["PROJ_LIB"] = "C:\\Python\\Anaconda\\Library\\share"
-import requests, csv
+import requests, gdal, csv
 import matplotlib.pyplot as plt
 import numpy as np
-from osgeo import gdal
 from mpl_toolkits.basemap import Basemap
 from scipy.ndimage import convolve
 from typing import List
