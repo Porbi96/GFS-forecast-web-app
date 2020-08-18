@@ -29,7 +29,7 @@ install:
   - conda install pip
   - pip install -r requirements.txt
   - pip install gdal==`gdal-config --version`
-  - pip install libgeos-3.5.0
+  - pip install libgeos
   - pip install libgeos-dev
   - pip install https://github.com/matplotlib/basemap/archive/master.zip
 script:
