@@ -13,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project/raw_data_visualization.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
+            <state relative-caret-position="219">
+              <caret line="343" lean-forward="true" selection-start-line="343" selection-end-line="343" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -23,24 +23,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/tests.py">
+        <entry file="file://$PROJECT_DIR$/project/web_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="131">
+              <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project/web_app.py">
+        <entry file="file://$PROJECT_DIR$/project/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+            <state relative-caret-position="170">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,7 +66,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+      <find>CHARTS</find>
+      <find>NotImplementedError</find>
+      <find>os.path.isdir</find>
       <find>BANDS</find>
+      <find>forecasts-dropdown</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -70,14 +83,17 @@
         <option value="$PROJECT_DIR$/raw_data_visualization.py" />
         <option value="$PROJECT_DIR$/tests/test_raw_data_visualization.py" />
         <option value="$PROJECT_DIR$/tests/tests.py" />
+        <option value="$PROJECT_DIR$/tests.py" />
+        <option value="$PROJECT_DIR$/project/app.py" />
+        <option value="$PROJECT_DIR$/project/web_app.py" />
         <option value="$PROJECT_DIR$/project/raw_data_visualization.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="951" />
-    <option name="width" value="978" />
-    <option name="height" value="1039" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="950" />
+    <option name="width" value="980" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -109,6 +125,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Kuba\Desktop\Projekt_GFS\GFS-forecast-web-app" />
       <recent name="C:\Users\Kuba\Desktop\Projekt_GFS\GFS-forecast-web-app\scripts" />
     </key>
   </component>
@@ -124,7 +141,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.web_app (1)">
+  <component name="RunManager" selected="Python.raw_data_visualization (1)">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="GFS-forecast-web-app" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="raw_data_visualization (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="GFS-forecast-web-app" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -138,27 +176,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project/raw_data_visualization.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="raw_data_visualization" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="GFS-forecast-web-app" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\Kuba\Desktop\Projekt_GFS\GFS-forecast-web-app\scripts\raw_data_visualization.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -220,17 +237,17 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/tests.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.web_app (1)" />
-        <item itemvalue="Python.web_app" />
         <item itemvalue="Python.raw_data_visualization (1)" />
+        <item itemvalue="Python.web_app (1)" />
+        <item itemvalue="Python.app" />
         <item itemvalue="Python tests.pytest in tests.py" />
-        <item itemvalue="Python.raw_data_visualization" />
+        <item itemvalue="Python.web_app" />
       </list>
     </recent_temporary>
   </component>
@@ -248,12 +265,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 06m 56s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 07m 11s.xml">
-      <configuration name="pytest in tests.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_in_tests_py - 2020.08.16 at 11h 08m 21s.xml">
       <configuration name="pytest in tests.py" configurationId="tests" />
     </history-entry>
@@ -278,16 +289,21 @@
     <history-entry file="pytest_in_tests_py - 2020.08.16 at 17h 20m 18s.xml">
       <configuration name="pytest in tests.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 20h 19m 16s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_tests_py - 2020.08.16 at 20h 20m 11s.xml">
+      <configuration name="pytest in tests.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4793713" visible="true" weight="0.15302013" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4793713" visible="true" weight="0.15704697" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27903682" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.39093485" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -299,14 +315,21 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Structure" order="3" sideWeight="0.5206287" side_tool="true" visible="true" weight="0.15033557" />
+      <window_info anchor="right" id="Structure" order="3" sideWeight="0.5206287" side_tool="true" visible="true" weight="0.14966443" />
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tests/tests.py">
+    <entry file="file://$PROJECT_DIR$/project/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -315,8 +338,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/project/web_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+        <state relative-caret-position="131">
+          <caret line="29" column="18" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -325,8 +348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/project/raw_data_visualization.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
+        <state relative-caret-position="219">
+          <caret line="343" lean-forward="true" selection-start-line="343" selection-end-line="343" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

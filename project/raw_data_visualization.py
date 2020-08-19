@@ -236,7 +236,7 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     :param chart:
     :return prepared data matrix (np.array)
     """
-    factor = 50
+    factor = 10
 
     if type(date) != str:
         raise TypeError("Date should be a string in format YYYYMMDD!")
@@ -335,28 +335,28 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
 
 if __name__ == '__main__':
     # gfs_scan_bands("{dir}/data/gfs/20200815/12z/gfs.pgrb2.0p25.f042".format(dir=DIRNAME))
-    # data = gfs_prepare_raw_data_as_array("20200815", 12, 6, CHARTS["Temperature 2m"])
-    # fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
-    # tempdir = "{dir}/data/pics/20200815/12z/006".format(dir=DIRNAME)
-    # if not os.path.exists(tempdir):
-    #     os.makedirs(tempdir)
-    # fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
+    data = gfs_prepare_raw_data_as_array("20200815", 12, 0, CHARTS["Temperature 2m"])
+    fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
+    tempdir = "{dir}/data/pics/20200815/12z/test".format(dir=DIRNAME)
+    if not os.path.exists(tempdir):
+        os.makedirs(tempdir)
+    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
 
-    while True:
-        # 1. Download the newest data from NOAA servers
-        date, hour, is_new_data = gfs_download_newest_data()
-
-        is_new_data = True
-        # 2. Prepare data for each chart, build charts and save .png pics
-        if is_new_data:
-            for key in CHARTS:
-                for forecast in FORECAST_HOURS:
-                    tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
-                    data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
-                    fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
-
-                    if not os.path.exists(tempdir):
-                        os.makedirs(tempdir)
-                    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
-
-        time.sleep(30*60)
+    # while True:
+    #     # 1. Download the newest data from NOAA servers
+    #     date, hour, is_new_data = gfs_download_newest_data()
+    #
+    #     is_new_data = True
+    #     # 2. Prepare data for each chart, build charts and save .png pics
+    #     if is_new_data:
+    #         for key in CHARTS:
+    #             for forecast in FORECAST_HOURS:
+    #                 tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
+    #                 data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
+    #                 fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
+    #
+    #                 if not os.path.exists(tempdir):
+    #                     os.makedirs(tempdir)
+    #                 fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
+    #
+    #     time.sleep(30*60)
