@@ -11,6 +11,7 @@ from scipy.ndimage import convolve
 from typing import List
 
 DIRNAME = os.path.dirname(__file__) + "/.."
+
 EXTENT_POLAND = [13, 25, 56, 48]
 
 BANDS = {
@@ -23,7 +24,7 @@ BANDS = {
     "Wind 10m": [420, 421],
     # "u-component 10m": 420,        # [m/s]
     # "v-component 10m": 421,        # [m/s]
-    "Precipitation ground": 424,   # [kg/m^2 s]
+    # "Precipitation ground": 424,   # [kg/m^2 s]
     "LI surface": 432,             # ['C]
     "CAPE surface": 433,           # [J/kg]
     "CIN surface": 434,            # [J/kg]
@@ -40,7 +41,7 @@ BANDS_NONZERO = {
     "Wind 10m": [442, 443],
     # "u-component 10m": 420,        # [m/s]
     # "v-component 10m": 421,        # [m/s]
-    "Precipitation ground": 447,  # [kg/m^2 s]
+    "Precipitation ground 6h": 450,  # [kg/m^2 s]
     "LI surface": 473,  # ['C]
     "CAPE surface": 474,  # [J/kg]
     "CIN surface": 475,  # [J/kg]
@@ -53,7 +54,20 @@ CHARTS = {
     "Temperature 2m": "Temperature 2m",
     "Dew point 2m": "Dew point 2m",
     "Wind 10m": "Wind 10m",
-    "Precipitation ground": "Precipitation ground",
+    # "Precipitation ground 6h": "Precipitation ground 6h",
+    "LI surface": "LI surface",
+    "CAPE surface": "CAPE surface",
+    "CIN surface": "CIN surface",
+    "Pressure sea lvl": "Pressure sea lvl"
+}
+
+CHARTS_NONZERO = {
+    "Wind gust ground": "Wind gust ground",
+    "Wind 250hPa": "Wind 250hPa",
+    "Temperature 2m": "Temperature 2m",
+    "Dew point 2m": "Dew point 2m",
+    "Wind 10m": "Wind 10m",
+    "Precipitation ground 6h": "Precipitation ground 6h",
     "LI surface": "LI surface",
     "CAPE surface": "CAPE surface",
     "CIN surface": "CIN surface",
@@ -74,29 +88,29 @@ def choose_levels(chart: str):
     :return: levels and colormap for specified chart
     """
     arrange_levels = {
-        "Wind gust ground":     np.arange(1, 50, 1),        # [m/s]
-        "Wind 250hPa":          np.arange(1, 70, 2),        # [m/s]
-        "Temperature 2m":       np.arange(-30, 42, 1),      # ['C]
-        "Dew point 2m":         np.arange(-30, 42, 1),      # ['C]
-        "Wind 10m":             np.arange(1, 50, 1),        # [m/s]
-        "Precipitation ground": np.arange(0, 100, 1),       # [kg/m^2 s]
-        "LI surface":           np.arange(-11, 12, 0.5),    # ['C]
-        "CAPE surface":         np.arange(100, 4000, 100),  # [J/kg]
-        "CIN surface":          np.arange(-300, 0, 5),      # [J/kg]
-        "Pressure sea lvl":     np.arange(950, 1150, 2)     # [Pa]
+        "Wind gust ground":         np.arange(1, 50, 1),        # [m/s]
+        "Wind 250hPa":              np.arange(1, 70, 2),        # [m/s]
+        "Temperature 2m":           np.arange(-30, 42, 1),      # ['C]
+        "Dew point 2m":             np.arange(-30, 42, 1),      # ['C]
+        "Wind 10m":                 np.arange(1, 50, 1),        # [m/s]
+        "Precipitation ground 6h":  np.arange(1, 41, 2),        # [kg/m^2 s]
+        "LI surface":               np.arange(-11, 12, 0.5),    # ['C]
+        "CAPE surface":             np.arange(100, 4000, 100),  # [J/kg]
+        "CIN surface":              np.arange(-300, 0, 10),     # [J/kg]
+        "Pressure sea lvl":         np.arange(950, 1060, 2)     # [hPa]
     }
 
     arrange_cmap = {
-        "Wind gust ground":     'Blues',
-        "Wind 250hPa":          'BuPu',
-        "Temperature 2m":       'jet',
-        "Dew point 2m":         'jet',
-        "Wind 10m":             'Blues',
-        "Precipitation ground": 'BuPu',
-        "LI surface":           'RdBu_r',
-        "CAPE surface":         'PuRd',
-        "CIN surface":          'BuPu_r',
-        "Pressure sea lvl":     'cool_r'
+        "Wind gust ground":         'Blues',
+        "Wind 250hPa":              'BuPu',
+        "Temperature 2m":           'jet',
+        "Dew point 2m":             'jet',
+        "Wind 10m":                 'Blues',
+        "Precipitation ground 6h":  'BuPu',
+        "LI surface":               'RdBu_r',
+        "CAPE surface":             'PuRd',
+        "CIN surface":              'BuPu_r',
+        "Pressure sea lvl":         'cool_r'
     }
 
     levels = arrange_levels[chart]
@@ -144,11 +158,17 @@ def gfs_download_newest_data():
         is_new_data = False
     else:
         print("Downloading data... It might take some minutes.")
-        for forecast in FORECAST_HOURS:
-            gfs_get_raw_data(date, hour, forecast, EXTENT_POLAND)
-        print("Data downloaded succesfully!")
-        is_new_data = True;
+        is_new_data = True
 
+        for forecast in FORECAST_HOURS:
+            try:
+                gfs_get_raw_data(date, hour, forecast, EXTENT_POLAND)
+            except EOFError:
+                print("Data is not prepared yet!")
+                is_new_data = False
+                break
+
+    # print("Data downloaded succesfully!")
     return date, hour, is_new_data
 
 
@@ -168,7 +188,7 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
     if type(forecast) != int:
         raise TypeError("Forecast should be one of integers in range 0-392!")
 
-    if len(date) != 8:
+    if len(date) != 8 or not date.isnumeric():
         raise ValueError("Date should be a string in format YYYYMMDD!")
     if hour not in [0, 6, 12, 18]:
         raise ValueError("Hour should be one of integers: 0, 6, 12, 18!")
@@ -200,15 +220,19 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
 
     r = requests.get(url)
     with open(os.path.join(path, filename), 'wb') as f:
-        for chunk in r.iter_content(chunk_size=1024*1024):
-            if chunk:
-                f.write(chunk)
+        f.write(r.content)
         f.close()
+        # for chunk in r.iter_content(chunk_size=1024*1024):
+        #     if chunk:
+        #         f.write(chunk)
+        # f.close()
 
-    if os.path.getsize(os.path.join(path, filename)):
+    size = os.path.getsize(os.path.join(path, filename))
+    if size > 10*1024:
         print("File {filename} downloaded and saved at {path}.".format(filename=filename, path=path))
     else:
         print("File {filename} not downloaded!".format(filename=filename))
+        raise EOFError
 
 
 def matrix_resize(data_in: np.ndarray, factor: int) -> np.ndarray:
@@ -245,13 +269,13 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     if type(forecast) != int:
         raise TypeError("Forecast should be one of integers in range 0-392!")
 
-    if len(date) != 8:
+    if len(date) != 8 or not date.isnumeric():
         raise ValueError("Date should be a string in format YYYYMMDD!")
     if hour not in [0, 6, 12, 18]:
         raise ValueError("Hour should be one of integers: 0, 6, 12, 18!")
     if forecast not in [num for num in range(0, 393)]:
         raise ValueError("Forecast should be one of integers in range 0-392!")
-    if chart not in CHARTS.keys():
+    if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
         raise ValueError("Chart should be one of CHARTS keys!")
 
     path = os.path.join(DIRNAME, "data/gfs/{}/{:02}z".format(date, hour))
@@ -266,14 +290,24 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
             data1 = grib.GetRasterBand(BANDS[CHARTS[chart]][0])
             data2 = grib.GetRasterBand(BANDS[CHARTS[chart]][1])
         else:
-            data1 = grib.GetRasterBand(BANDS_NONZERO[CHARTS[chart]][0])
-            data2 = grib.GetRasterBand(BANDS_NONZERO[CHARTS[chart]][1])
+            data1 = grib.GetRasterBand(BANDS_NONZERO[CHARTS_NONZERO[chart]][0])
+            data2 = grib.GetRasterBand(BANDS_NONZERO[CHARTS_NONZERO[chart]][1])
         data = (data1.ReadAsArray())**2 + (data2.ReadAsArray())**2
-        data = np.sqrt(data)
+        data = np.sqrt(data*1.0)
         print("Band name:   {name}.\n".format(name=data1.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data1.GetDescription()))
         print("Band name:   {name}.\n".format(name=data2.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data2.GetDescription()))
+
+    elif chart == "Pressure sea lvl":
+        if forecast == 0:
+            data = grib.GetRasterBand(BANDS[chart])
+        else:
+            data = grib.GetRasterBand(BANDS_NONZERO[chart])
+        print("Band name:   {name}.\n".format(name=data.GetMetadata()['GRIB_COMMENT']) +
+              "Description: {description}.".format(description=data.GetDescription()))
+
+        data = data.ReadAsArray() / 100.0
     else:
         if forecast == 0:
             data = grib.GetRasterBand(BANDS[chart])
@@ -281,9 +315,9 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
             data = grib.GetRasterBand(BANDS_NONZERO[chart])
         print("Band name:   {name}.\n".format(name=data.GetMetadata()['GRIB_COMMENT']) +
               "Description: {description}.".format(description=data.GetDescription()))
-        data = data.ReadAsArray()
 
-    # TODO: find faster solution than convolve()
+        data = data.ReadAsArray() * 1.0
+
     return convolve(matrix_resize(data, factor), np.ones([factor, factor])/(factor**2))
 
 
@@ -294,31 +328,39 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
     :param data:
     :param chart:
     """
+    if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
+        raise ValueError("Chart should be one of CHARTS keys!")
 
     left_lon = extent[0]
     right_lon = extent[1]
     top_lat = extent[2]
     bottom_lat = extent[3]
 
+    # Prepare meshgrid
     x = np.linspace(left_lon, right_lon, data.shape[1])
     y = np.linspace(bottom_lat, top_lat, data.shape[0])
     xx, yy = np.meshgrid(x, y)
 
-    levels, cmap = choose_levels(CHARTS[chart])
+    # Prepare contour levels and colormap
+    levels, cmap = choose_levels(chart)
 
     fig = plt.figure(figsize=(10.8, 7.2), dpi=200)
 
     bmap = Basemap(llcrnrlon=left_lon, urcrnrlon=right_lon, llcrnrlat=bottom_lat, urcrnrlat=top_lat, projection='cyl', resolution='i')
     bmap.drawcoastlines(linewidth=1.5)
     bmap.drawcountries(linewidth=1.5)
-    bmap.readshapefile('../shapefiles/POL_adm1', 'poland', linewidth=1.0)
+    if extent == EXTENT_POLAND:
+        bmap.readshapefile('../shapefiles/POL_adm1', 'poland', linewidth=1.0)
 
     plt.contourf(xx[::-1], yy[::-1], data, alpha=0.9, cmap=cmap, levels=levels)
-    S2 = plt.contour(xx[::-1], yy[::-1], data, alpha=0.8, colors='black', linewidths=0.5, levels=levels)
+    S2 = plt.contour(xx[::-1], yy[::-1], data, alpha=0.8, colors='black', linewidths=0.5, levels=levels[::5])
     plt.clabel(S2, inline=0, inline_spacing=0, fontsize=12, fmt='%1.0f', colors='black')
     # plt.show()
 
-    return fig
+    if not os.path.exists(tempdir):
+        os.makedirs(tempdir)
+    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
+    plt.close(fig)
 
 
 # gfs_get_raw_data('20200722', 6, 0, [13, 25, 56, 48])
@@ -334,29 +376,36 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
 # print("Execution time: {}".format(time.time()-start_time))
 
 if __name__ == '__main__':
+    # gfs_get_raw_data("20200819", 12, 0, EXTENT_POLAND)
     # gfs_scan_bands("{dir}/data/gfs/20200815/12z/gfs.pgrb2.0p25.f042".format(dir=DIRNAME))
-    data = gfs_prepare_raw_data_as_array("20200815", 12, 0, CHARTS["Temperature 2m"])
-    fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
-    tempdir = "{dir}/data/pics/20200815/12z/test".format(dir=DIRNAME)
-    if not os.path.exists(tempdir):
-        os.makedirs(tempdir)
-    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
+    # data = gfs_prepare_raw_data_as_array("20200815", 12, 0, CHARTS["Temperature 2m"])
+    # fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
+    # tempdir = "{dir}/data/pics/20200815/12z/test".format(dir=DIRNAME)
+    # if not os.path.exists(tempdir):
+    #     os.makedirs(tempdir)
+    # fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
 
-    # while True:
-    #     # 1. Download the newest data from NOAA servers
-    #     date, hour, is_new_data = gfs_download_newest_data()
-    #
-    #     is_new_data = True
-    #     # 2. Prepare data for each chart, build charts and save .png pics
-    #     if is_new_data:
-    #         for key in CHARTS:
-    #             for forecast in FORECAST_HOURS:
-    #                 tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
-    #                 data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
-    #                 fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
-    #
-    #                 if not os.path.exists(tempdir):
-    #                     os.makedirs(tempdir)
-    #                 fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
-    #
-    #     time.sleep(30*60)
+    while True:
+        # 1. Download the newest data from NOAA servers
+        date, hour, is_new_data = gfs_download_newest_data()
+
+        # date = "20200820"
+        # hour = 0
+        # is_new_data = True
+
+        # 2. Prepare data for each chart, build charts and save .png pics
+        if is_new_data:
+            for forecast in FORECAST_HOURS:
+                if forecast == 0:
+                    for key in CHARTS:
+                        tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
+                        data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
+                        gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
+
+                else:
+                    for key in CHARTS_NONZERO:
+                        tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
+                        data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS_NONZERO[key])
+                        gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS_NONZERO[key])
+
+        time.sleep(30*60)
