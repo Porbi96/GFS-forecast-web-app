@@ -35,4 +35,4 @@ install:
   - pip install https://github.com/matplotlib/basemap/archive/master.zip
  
 script:
-  - python tests.py
+  - pytest tests.py

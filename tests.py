@@ -23,6 +23,7 @@ class TestRawDataVisualization(unittest.TestCase):
         self.assertRaises(ValueError, lambda: rdv.gfs_prepare_raw_data_as_array("20200816", 12, 1000, rdv.BANDS["Temperature 2m"]))
         self.assertRaises(ValueError, lambda: rdv.gfs_prepare_raw_data_as_array("20200816", 1000, 0, rdv.BANDS["Temperature 2m"]))
         self.assertRaises(ValueError, lambda: rdv.gfs_prepare_raw_data_as_array("202008169", 12, 0, rdv.BANDS["Temperature 2m"]))
+        self.assertRaises(TypeError, lambda: rdv.gfs_prepare_raw_data_as_array("NotANumb", 12, 0, rdv.BANDS["Temperature 2m"]))
 
     # def test_gfs_visualize_gradient_map(self):
     #     self.assertRaises(ValueError, lambda: rdv.gfs_visualize_gradient_map(np.array([[0, 1], [1, 0]]), rdv.EXTENT_POLAND, "Test-ShouldRaiseValueError"))
