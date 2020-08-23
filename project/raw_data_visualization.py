@@ -87,6 +87,10 @@ def choose_levels(chart: str):
     :param chart: chart name
     :return: levels and colormap for specified chart
     """
+
+    if chart not in CHARTS.keys() or chart not in CHARTS_NONZERO.keys():
+        raise ValueError("Incorrect chart!")
+
     arrange_levels = {
         "Wind gust ground":         np.arange(1, 50, 1),        # [m/s]
         "Wind 250hPa":              np.arange(1, 70, 2),        # [m/s]
@@ -124,6 +128,10 @@ def gfs_scan_bands(filepath):
     Helper function to scan through all bands in grib file and save their names into csv file.
     :param filepath: path to particular grib file.
     """
+
+    if not os.path.isfile(filepath):
+        raise ValueError("Wrong filepath - file not found!")
+
     grib = gdal.Open(filepath)
     with open("bands.csv", 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -184,9 +192,11 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
     if type(date) != str:
         raise TypeError("Date should be a string in format YYYYMMDD!")
     if type(hour) != int:
-        raise TypeError("Hour should be one of integers: 0, 6, 12, 18!")
+        raise TypeError("Hour should be a type of integer!")
     if type(forecast) != int:
-        raise TypeError("Forecast should be one of integers in range 0-392!")
+        raise TypeError("Forecast should be a type of integer!")
+    if not isinstance(extent, list):
+        raise TypeError("Extent should be a type of list of integers!")
 
     if len(date) != 8 or not date.isnumeric():
         raise ValueError("Date should be a string in format YYYYMMDD!")
@@ -242,6 +252,12 @@ def matrix_resize(data_in: np.ndarray, factor: int) -> np.ndarray:
     :param factor: multiplier
     :return: new matrix (np.array) with size data_in.shape*factor
     """
+
+    if type(factor) != int:
+        raise TypeError("Factor should be an integer!")
+    if factor <= 0:
+        raise ValueError("Factor should be a positive integer!")
+
     result = np.zeros(np.array(data_in.shape)*factor)
     for i in range(data_in.shape[0]):
         for j in range(data_in.shape[1]):
@@ -268,6 +284,8 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
         raise TypeError("Hour should be one of integers: 0, 6, 12, 18!")
     if type(forecast) != int:
         raise TypeError("Forecast should be one of integers in range 0-392!")
+    if type(chart) != str:
+        raise TypeError("Chart should be a string!")
 
     if len(date) != 8 or not date.isnumeric():
         raise ValueError("Date should be a string in format YYYYMMDD!")
@@ -276,10 +294,13 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     if forecast not in [num for num in range(0, 393)]:
         raise ValueError("Forecast should be one of integers in range 0-392!")
     if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
-        raise ValueError("Chart should be one of CHARTS keys!")
+        raise ValueError("Chart should be one of CHARTS or CHARTS_NONZERO keys!")
 
     path = os.path.join(DIRNAME, "data/gfs/{}/{:02}z".format(date, hour))
     filename = "gfs.pgrb2.0p25.f{:03}".format(forecast)
+
+    if not os.path.isfile(os.path.join(path, filename)):
+        raise FileNotFoundError("Could not find particular GRIB file.")
 
     print("Opening file: {file}".format(file=filename))
     grib = gdal.Open(os.path.join(path, filename))
@@ -321,13 +342,22 @@ def gfs_prepare_raw_data_as_array(date: str, hour: int, forecast: int, chart: st
     return convolve(matrix_resize(data, factor), np.ones([factor, factor])/(factor**2))
 
 
-def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
+def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str, path=DIRNAME + "/data/pics/0"):
     """
     Visualises prepared gfs matrix
     :param extent:
     :param data:
     :param chart:
+    :param path:
     """
+
+    if not isinstance(extent, list):
+        raise TypeError("Extent should be a type of list of integers!")
+    if type(chart) is not str:
+        raise TypeError("Chart type should be a string!")
+
+    if len(extent) != 4:
+        raise ValueError("Extent should be a List of four integers!")
     if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
         raise ValueError("Chart should be one of CHARTS keys!")
 
@@ -357,34 +387,13 @@ def gfs_visualize_gradient_map(data: np.ndarray, extent: List[int], chart: str):
     plt.clabel(S2, inline=0, inline_spacing=0, fontsize=12, fmt='%1.0f', colors='black')
     # plt.show()
 
-    if not os.path.exists(tempdir):
-        os.makedirs(tempdir)
-    fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=key), bbox_inches='tight')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    fig.savefig("{path}/{chart}.png".format(path=path, chart=key), bbox_inches='tight')
     plt.close(fig)
 
 
-# gfs_get_raw_data('20200722', 6, 0, [13, 25, 56, 48])
-# simple_visualization('20200722', '06', [13, 25, 56, 48])
-# gfs_scan_bands("gfs.t06z.pgrb2.0p25.f000")
-
-# gfs_get_raw_data("20200728", 12, 0, EXTENT_POLAND)
-# data = gfs_prepare_raw_data_as_array("20200728", 12, 0, 415)
-# gfs_visualize_gradient_map(data, EXTENT_POLAND)
-
-# start_time = time.time()
-# gfs_download_newest_data()
-# print("Execution time: {}".format(time.time()-start_time))
-
 if __name__ == '__main__':
-    # gfs_get_raw_data("20200819", 12, 0, EXTENT_POLAND)
-    # gfs_scan_bands("{dir}/data/gfs/20200815/12z/gfs.pgrb2.0p25.f042".format(dir=DIRNAME))
-    # data = gfs_prepare_raw_data_as_array("20200815", 12, 0, CHARTS["Temperature 2m"])
-    # fig = gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS["Temperature 2m"])
-    # tempdir = "{dir}/data/pics/20200815/12z/test".format(dir=DIRNAME)
-    # if not os.path.exists(tempdir):
-    #     os.makedirs(tempdir)
-    # fig.savefig("{dir}/{chart}.png".format(dir=tempdir, chart=CHARTS["Temperature 2m"]), bbox_inches='tight')
-
     while True:
         # 1. Download the newest data from NOAA servers
         date, hour, is_new_data = gfs_download_newest_data()
@@ -396,16 +405,16 @@ if __name__ == '__main__':
         # 2. Prepare data for each chart, build charts and save .png pics
         if is_new_data:
             for forecast in FORECAST_HOURS:
-                if forecast == 0:
-                    for key in CHARTS:
-                        tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
-                        data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS[key])
-                        gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key])
-
-                else:
-                    for key in CHARTS_NONZERO:
-                        tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date, hour=hour, forecast=forecast)
-                        data = gfs_prepare_raw_data_as_array(date, hour, forecast, CHARTS_NONZERO[key])
-                        gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS_NONZERO[key])
+                charts = CHARTS if forecast == 0 else CHARTS_NONZERO
+                for key in CHARTS:
+                    try:
+                        data = gfs_prepare_raw_data_as_array(date, hour, forecast, charts[key])
+                    except FileNotFoundError:
+                        pass
+                    else:
+                        tempdir = '{dir}/data/pics/{date}/{hour:02}z/{forecast:03}'.format(dir=DIRNAME, date=date,
+                                                                                           hour=hour,
+                                                                                           forecast=forecast)
+                        gfs_visualize_gradient_map(data, EXTENT_POLAND, CHARTS[key], tempdir)
 
         time.sleep(30*60)
