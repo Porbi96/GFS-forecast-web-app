@@ -207,7 +207,7 @@ def update_chart_dropdown(day, hour, forecast, current_val):
     [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value'),
      dash.dependencies.Input('forecast-dropdown', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
 def set_display_children(day, hour, forecast, chart):
-    return f"{chart[:-4]}" if chart is not None else 'Chart not selected.'
+    return f'{day} {hour}:00 UTC +{forecast}h {chart[:-4]}' if chart is not None else 'Chart not selected.'
     # return f'you have selected path: {base_dir}{day}/{hour}/{forecast}/{chart}' if chart is not None else 'Path is not selected yet.'
 
 
