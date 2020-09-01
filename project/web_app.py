@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 
 import os
 import glob
@@ -23,13 +24,45 @@ charts = {helper_path(day):
              for hour in glob.glob(f"{base_dir}{helper_path(day)}/*/")}
           for day in glob.glob(f"{base_dir}*/")}
 
-app = dash.Dash()
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 # print(charts[list(charts.keys())[0]])
 
 app.layout = html.Div([
-    # html.Div([
-    #
-    # ]),
+    html.Br(),
+    dbc.Modal(
+        [
+            dbc.ModalHeader("Hello!"),
+            dbc.ModalBody("""
+            This is a simple web application, which visualizes GFS numerical weather forecast (some of major elements) for Poland teritory.
+            \n
+            Author: Jakub Poręba
+            MIT License
+            Github: https://github.com/Porbi96/GFS-forecast-web-app
+            @2020
+            """),
+            dbc.ModalFooter(
+                dbc.Button("Close", id="info-close", className="ml-auto")
+            ),
+        ],
+        id="info-modal",
+        # size="sm",
+        style={
+            'white-space': 'pre-line'
+        }
+    ),
+
+    html.Div([
+        dcc.Slider(
+            id='forecast-slider',
+            step=None,
+            min=0,
+            updatemode='drag'
+        )],
+        style={
+            'width': '95%',
+            'padding-left': '2%'
+        }
+    ),
     html.Aside([
         html.Br(),
         html.Div([
@@ -37,9 +70,11 @@ app.layout = html.Div([
                 id='day-dropdown',
                 options=[{'label': i, 'value': i} for i in charts.keys()],
                 value=list(charts.keys())[-1],
-                style=dict(
-                    width='99%'
-                )
+                clearable=False,
+                style={
+                    'width': '99%',
+                    'margin-left': '5px'
+                }
             )
         ]),
         html.Br(),
@@ -47,23 +82,11 @@ app.layout = html.Div([
         html.Div([
             dcc.Dropdown(
                 id='hour-dropdown',
-                # options=[{'label': i, 'value': i} for i in charts[list(charts.keys())[0]]],
-                # value=list(charts.keys())[0][0],
-                style=dict(
-                    width='99%'
-                )
-            )
-        ]),
-        html.Br(),
-
-        html.Div([
-            dcc.Dropdown(
-                id='forecast-dropdown',
-                # options=[{'label': i, 'value': i} for i in charts[list(charts.keys())[0]]],
-                # value=list(charts[list(charts.keys())[0]])[0],
-                style=dict(
-                    width='99%'
-                )
+                clearable=False,
+                style={
+                    'width': '99%',
+                    'margin-left': '5px'
+                }
             )
         ]),
         html.Br(),
@@ -71,27 +94,31 @@ app.layout = html.Div([
         html.Div([
             dcc.Dropdown(
                 id='chart-dropdown',
-                style=dict(
-                    width='99%'
-                )
+                clearable=False,
+                style={
+                    'width': '99%',
+                    'margin-left': '5px'
+                }
+
             )
         ]),
         html.Br(),
+
+        html.Div(id='display-selected-values', style={'textAlign': 'center'}),
+        html.Br(), html.Br(),
+
+        html.Div([
+            dbc.Button("Info", id="info-button", className="mr-1")
+        ], style={
+            'bottom': '10px'
+        })
+
     ], style={
         'width': '30%',
-        # 'margin-right': '15px',
         'float': 'left'
     }),
 
     html.Main([
-        html.Div(id='display-selected-values', style={'textAlign': 'center'}),
-
-        dcc.Slider(
-            id='forecast-slider',
-            step=None,
-            min=0
-        ),
-
         html.Img(id='image',
                  style={'height': '100%',
                         'width': '100%',
@@ -109,6 +136,17 @@ app.layout = html.Div([
     })
 
 ])
+
+
+@app.callback(
+    dash.dependencies.Output("info-modal", "is_open"),
+    [dash.dependencies.Input("info-button", "n_clicks"), dash.dependencies.Input("info-close", "n_clicks")],
+    [dash.dependencies.State("info-modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 @app.callback(
@@ -153,29 +191,14 @@ def update_hour_dropdown(day, current_val):
 
 
 @app.callback(
-    [dash.dependencies.Output('forecast-dropdown', 'options'), dash.dependencies.Output('forecast-dropdown', 'value')],
-    [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value')],
-    [dash.dependencies.State("forecast-dropdown", "value")]
-)
-def update_forecast_dropdown(day, hour, current_val):
-    options = [{'label': "+{}h".format(int(i)), 'value': i} for i in charts[day][hour].keys()] \
-        if hour is not None else [{'label': " ", 'value': " "}]
-    if current_val in [option['value'] for option in options]:
-        value = current_val
-    else:
-        value = options[0]['value']
-
-    return options, value
-
-
-@app.callback(
     [dash.dependencies.Output('forecast-slider', 'marks'), dash.dependencies.Output('forecast-slider', 'max'),
      dash.dependencies.Output('forecast-slider', 'value')],
     [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value')],
     [dash.dependencies.State("forecast-slider", "value")]
 )
 def update_forecast_slider(day, hour, current_val):
-    marks = {int(i): "" for i in charts[day][hour].keys()} if hour is not None else {0: "no data", 6: "no data"}
+    marks = {int(i): f"{int(i) if int(i)%12==0 else ''}" for i in charts[day][hour].keys()} if all(v is not None for v in [day, hour]) \
+        else {None: "no data", None: "no data"}
     max = list(marks.keys())[-1]
     if current_val in list(marks.keys()):
         value = current_val
@@ -188,12 +211,12 @@ def update_forecast_slider(day, hour, current_val):
 @app.callback(
     [dash.dependencies.Output('chart-dropdown', 'options'), dash.dependencies.Output('chart-dropdown', 'value')],
     [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value'),
-     dash.dependencies.Input('forecast-dropdown', 'value')],
+     dash.dependencies.Input('forecast-slider', 'value')],
     [dash.dependencies.State("chart-dropdown", "value")]
 )
 def update_chart_dropdown(day, hour, forecast, current_val):
-    options = [{'label': i[:-4], 'value': i} for i in charts[day][hour][forecast][::]] \
-        if (forecast is not None and forecast is not " ") else [{'label': " ", 'value': " "}]
+    options = [{'label': i[:-4], 'value': i} for i in charts[day][hour][f'{forecast:03}'][::]] \
+        if all(v not in [None, " "] for v in [day, hour, forecast]) else [{'label': " ", 'value': " "}]
     if current_val in [option['value'] for option in options]:
         value = current_val
     else:
@@ -205,18 +228,19 @@ def update_chart_dropdown(day, hour, forecast, current_val):
 @app.callback(
     dash.dependencies.Output('display-selected-values', 'children'),
     [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value'),
-     dash.dependencies.Input('forecast-dropdown', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
+     dash.dependencies.Input('forecast-slider', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
 def set_display_children(day, hour, forecast, chart):
-    return f'{day} {hour}:00 UTC +{forecast}h {chart[:-4]}' if chart is not None else 'Chart not selected.'
+    return 'Chart not selected.' if any(v is None for v in [chart, day, hour, forecast]) else f'{day} {hour[:-1]}:00 UTC +{forecast}h {chart[:-4]}'
     # return f'you have selected path: {base_dir}{day}/{hour}/{forecast}/{chart}' if chart is not None else 'Path is not selected yet.'
 
 
 @app.callback(
     dash.dependencies.Output('image', 'src'),
     [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value'),
-     dash.dependencies.Input('forecast-dropdown', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
+     dash.dependencies.Input('forecast-slider', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
 def update_image_src(day, hour, forecast, chart):
-    return f"{static_image_route}{day}-{hour}-{forecast}-{chart}"
+    return f"{static_image_route}{day}-{hour}-{forecast:03}-{chart}" if forecast is not None \
+        else f"{static_image_route}{day}-{hour}-000-{chart}"
 
 
 @app.server.route('{}<img_path>'.format(static_image_route))
@@ -227,6 +251,7 @@ def serve_image(img_path):
     image_dir = base_dir + image_path[:17]
     image_name = image_path[17:]
     return flask.send_from_directory(image_dir, image_name)
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
