@@ -6,4 +6,5 @@ flask
 dash
 dash[testing]
 pytest
+pytest-cov
 attrs==19.1.0

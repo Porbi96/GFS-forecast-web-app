@@ -33,6 +33,10 @@ install:
   - pip install -r requirements.txt
   - pip install gdal==`gdal-config --version`
   - pip install https://github.com/matplotlib/basemap/archive/master.zip
+  - pip install coveralls
  
 script:
-  - pytest tests.py
+  - pytest --cov
+
+after_success:
+  - coveralls
