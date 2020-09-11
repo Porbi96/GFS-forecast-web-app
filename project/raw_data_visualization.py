@@ -448,8 +448,8 @@ if __name__ == '__main__':
         # 1. Download the newest data from NOAA servers
         # date, hour, is_new_data = gfs_download_newest_data()
 
-        date = "20200826"
-        hour = 0
+        date = "20200830"
+        hour = 6
         is_new_data = True
 
         # 2. Prepare data for each chart, build charts and save .png pics

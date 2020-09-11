@@ -25,7 +25,7 @@ charts = {helper_path(day):
           for day in glob.glob(f"{base_dir}*/")}
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-# print(charts[list(charts.keys())[0]])
+server = app.server
 
 app.layout = html.Div([
     html.Br(),
@@ -135,7 +135,7 @@ app.layout = html.Div([
         'float': 'right'
     })
 
-])
+], style={'backgroundColor': '#181a3d'})
 
 
 @app.callback(
