@@ -2,5 +2,8 @@ data/
 .idea/
 **/__pycache__/
 
-!*.pyc
+*.pyc
 
+__pycache__/tests.cpython-37-PYTEST.pyc
+project/__pycache__/raw_data_visualization.cpython-37.pyc
+.idea/workspace.xml
