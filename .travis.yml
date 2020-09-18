@@ -1,0 +1,42 @@
+language: python
+python:
+  - "3.7"
+before_install:
+  - sudo add-apt-repository --yes ppa:ubuntugis/ppa
+  - sudo apt-get --quiet update
+  - sudo apt-get install --yes libgdal-dev gdal-bin
+  - sudo apt-get install libgeos-3.5.0
+  - sudo apt-get install libgeos-dev
+  - export CPLUS_INCLUDE_PATH=/usr/include/gdal
+  - export C_INCLUDE_PATH=/usr/include/gdal
+
+install:
+  # We do this conditionally because it saves us some downloading if the
+  # version is the same.
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  - conda install -c conda-forge gdal
+  - conda install -c conda-forge basemap
+  - conda install -c conda-forge basemap-data-hires 
+  - conda install pip
+  - pip install -r requirements.txt
+  - pip install gdal==`gdal-config --version`
+  - pip install https://github.com/matplotlib/basemap/archive/master.zip
+  - pip install coveralls
+ 
+script:
+  - pytest --cov=project
+
+after_success:
+  - coveralls
