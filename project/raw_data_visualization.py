@@ -446,11 +446,11 @@ def prepare_basemap_pickle(extent: List[int]):
 if __name__ == '__main__':
     while True:
         # 1. Download the newest data from NOAA servers
-        # date, hour, is_new_data = gfs_download_newest_data()
+        date, hour, is_new_data = gfs_download_newest_data()
 
-        date = "20200830"
-        hour = 6
-        is_new_data = True
+        # date = "20200830"
+        # hour = 6
+        # is_new_data = True
 
         # 2. Prepare data for each chart, build charts and save .png pics
         if is_new_data:
