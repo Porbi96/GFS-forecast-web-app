@@ -17,8 +17,14 @@ class TestRawDataVisualization(unittest.TestCase):
 
     def test_gfs_get_raw_data(self):
         self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data(20200816, 12, 0, rdv.EXTENT_POLAND))
+        self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data("20200816", "12", 0, rdv.EXTENT_POLAND))
+        self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data("20200816", 12, "0", rdv.EXTENT_POLAND))
         self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 1, 0, rdv.EXTENT_POLAND))
+        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("2020081", 0, 0, rdv.EXTENT_POLAND))
+        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("d0200811", 0, 0, rdv.EXTENT_POLAND))
+        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 0, 400, rdv.EXTENT_POLAND))
         self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data("20200816", 10, 0, 5))
+        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 10, 0, [5]))
 
     def test_matrix_resize_if_correct_resizing(self):
         array1 = np.array([[0, 1], [1, 0]])
@@ -41,6 +47,26 @@ class TestRawDataVisualization(unittest.TestCase):
                                                                               extent=[1, 1, 1]))
         self.assertRaises(FileNotFoundError, lambda: rdv.gfs_build_visualization_map("30200820", 12, 0,
                                                                                      "Temperature 2m"))
+
+    def test_gfs_build_visualization_map_bad_types(self):
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map(20200820, 12, 0, "Temperature 2m"))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", "12", 0, "Temperature 2m"))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, "0", "Temperature 2m"))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, 2))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, extent=5))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, img_path=10))
+
+    def test_prepare_basemap_pickle(self):
+        self.assertRaises(TypeError, lambda: rdv.prepare_basemap_pickle(20))
+        self.assertRaises(ValueError, lambda: rdv.prepare_basemap_pickle([20, 10]))
+
+    def test_prepare_basemap_pickle_should_pass(self):
+        raised = False
+        try:
+            rdv.prepare_basemap_pickle(rdv.EXTENT_POLAND)
+        except:
+            raised = True
+        self.assertEqual(False, raised)
 
 
 if __name__ == '__main__':
