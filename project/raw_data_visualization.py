@@ -408,7 +408,7 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
     init_date = datetime.strptime(f"{date[:4]}/{date[4:6]}/{date[6:]} {hour:02}:00", '%Y/%m/%d %H:%M')
     valid_date = init_date + timedelta(hours=forecast)
 
-    plt.legend([], title=f"{CHARTS_NAMES[chart]}\ninit:  {init_date.strftime('%Y/%m/%d %H:%M')} UTC\nvalid: {valid_date.strftime('%Y/%m/%d %H:%M')} UTC", loc="upper left")
+    plt.legend([], title=f"{CHARTS_NAMES[chart]}\ninit:   {init_date.strftime('%Y/%m/%d %H:%M')} UTC\nvalid: {valid_date.strftime('%Y/%m/%d %H:%M')} UTC", loc="upper left")
 
     if chart in ["Wind 250hPa", "Wind 10m"]:
         plt.quiver(xx[::20, ::20], yy[::20, ::20], wind_u[::20, ::20], wind_v[::20, ::20], scale=50, width=0.001)
@@ -466,7 +466,8 @@ if __name__ == '__main__':
                         pass
         print('''\n\n
         =======================================================\n
+        =================={}==================
         ====== Newest charts are prepared and available! ======\n
         =======================================================\n
-        ''')
+        '''.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         time.sleep(30*60)

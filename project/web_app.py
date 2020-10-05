@@ -7,6 +7,8 @@ import os
 import glob
 import flask
 
+from datetime import datetime, timedelta
+
 base_dir = f"{os.path.dirname(__file__)}\\..\\data\\pics\\"
 static_image_route = '/static/'
 
@@ -28,13 +30,20 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 app.layout = html.Div([
-    html.Br(),
     dbc.Modal(
         [
             dbc.ModalHeader("Hello!"),
-            dbc.ModalBody("""
-            This is a simple web application, which visualizes GFS numerical weather forecast (some of major elements) for Poland teritory.
-            \n
+            dbc.ModalBody("""This is a web application, which visualizes NOAA's GFS numerical weather forecast (some of major elements) for Poland teritory.
+            
+            Instructions:
+            1. Choose from which date and hour you'd like to see forecast calculations (base date and hour).
+            2. Choose which data you'd like to see (chart).
+            3. Use slider on the top to choose exact date and hour of predicted weather data (forecast).
+            
+            Charts will appear automatically. You can press right button on image and copy direct link to it or save it.
+            
+            Data is being downloaded and prepared just when it appears on NOAA's servers, usually every 6 hours.
+            
             Author: Jakub Poręba
             MIT License
             Github: https://github.com/Porbi96/GFS-forecast-web-app
@@ -51,20 +60,36 @@ app.layout = html.Div([
         }
     ),
 
+    html.Br(),
     html.Div([
-        dcc.Slider(
-            id='forecast-slider',
-            step=None,
-            min=0,
-            updatemode='drag'
-        )],
-        style={
-            'width': '95%',
-            'padding-left': '2%'
-        }
-    ),
+        html.Div(id='forecast-text', children='Forecast:',
+                 style={
+                     'margin-left': '20px',
+                     'color': 'white',
+                     # 'backgroundColor': '#181a3d'
+                 }),
+        html.Div([
+            dcc.Slider(
+                id='forecast-slider',
+                step=None,
+                min=0,
+                updatemode='drag'
+            ),
+            html.Br()
+        ],
+            style={
+                'width': '100%'
+
+                # 'text-orientation' : 'upright'
+# ‘text-orientation’: ‘upright’
+            }
+        )
+    ], style={'backgroundColor': '#003d66'}),
+
     html.Aside([
         html.Br(),
+
+        html.Div(id='day-text', children='Base day:', style={'margin-left': '10px'}),
         html.Div([
             dcc.Dropdown(
                 id='day-dropdown',
@@ -79,6 +104,7 @@ app.layout = html.Div([
         ]),
         html.Br(),
 
+        html.Div(id='hour-text', children='Base hour:', style={'margin-left': '10px'}),
         html.Div([
             dcc.Dropdown(
                 id='hour-dropdown',
@@ -91,6 +117,7 @@ app.layout = html.Div([
         ]),
         html.Br(),
 
+        html.Div(id='chart-text', children='Chart:', style={'margin-left': '10px'}),
         html.Div([
             dcc.Dropdown(
                 id='chart-dropdown',
@@ -104,14 +131,11 @@ app.layout = html.Div([
         ]),
         html.Br(),
 
-        html.Div(id='display-selected-values', style={'textAlign': 'center'}),
-        html.Br(), html.Br(),
-
         html.Div([
-            dbc.Button("Info", id="info-button", className="mr-1")
+            dbc.Button("Info & instructions", id="info-button", className="mr-1")
         ], style={
-            'bottom': '10px'
-        })
+            'textAlign': 'center'
+        }),
 
     ], style={
         'width': '30%',
@@ -197,8 +221,13 @@ def update_hour_dropdown(day, current_val):
     [dash.dependencies.State("forecast-slider", "value")]
 )
 def update_forecast_slider(day, hour, current_val):
-    marks = {int(i): f"{int(i) if int(i)%12==0 else ''}" for i in charts[day][hour].keys()} if all(v is not None for v in [day, hour]) \
-        else {None: "no data", None: "no data"}
+    base_datetime = datetime.strptime(f"{day}-{hour}", "%Y%m%d-%Hz")
+    marks = {
+        int(i): {'label': "{}".format((base_datetime + timedelta(hours=int(i))).strftime('%d.%m\n%H:00')
+                                      if int(i) % 12 == 0 else ''),
+                 'style': {'white-space': 'pre-line'}}
+        for i in charts[day][hour].keys()
+    } if all(v is not None for v in [day, hour]) else {None: "no data"}
     max = list(marks.keys())[-1]
     if current_val in list(marks.keys()):
         value = current_val
@@ -223,15 +252,6 @@ def update_chart_dropdown(day, hour, forecast, current_val):
         value = options[0]['value']
 
     return options, value
-
-
-@app.callback(
-    dash.dependencies.Output('display-selected-values', 'children'),
-    [dash.dependencies.Input('day-dropdown', 'value'), dash.dependencies.Input('hour-dropdown', 'value'),
-     dash.dependencies.Input('forecast-slider', 'value'), dash.dependencies.Input('chart-dropdown', 'value')])
-def set_display_children(day, hour, forecast, chart):
-    return 'Chart not selected.' if any(v is None for v in [chart, day, hour, forecast]) else f'{day} {hour[:-1]}:00 UTC +{forecast}h {chart[:-4]}'
-    # return f'you have selected path: {base_dir}{day}/{hour}/{forecast}/{chart}' if chart is not None else 'Path is not selected yet.'
 
 
 @app.callback(

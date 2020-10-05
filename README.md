@@ -1,4 +1,3 @@
-# GFS-forecast-web-app
 [![Build Status](https://travis-ci.org/Porbi96/GFS-forecast-web-app.svg?branch=master)](https://travis-ci.org/Porbi96/GFS-forecast-web-app)
 [![Coverage Status](https://coveralls.io/repos/github/Porbi96/GFS-forecast-web-app/badge.svg?branch=master)](https://coveralls.io/github/Porbi96/GFS-forecast-web-app?branch=master)
 
@@ -20,7 +19,7 @@ Due to server limitations, the data is being updated only occasionally.
 ## Requirements
 * Python 3.7 or newer
 * (Reccomended) Conda
-* GDAL, Basemap and other packages included in `requirements.txt`
+* GDAL, Basemap, Dash and other packages included in `requirements.txt`
 
 The full environment preparation can be based on `.travis.yml` file.
 
