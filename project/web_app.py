@@ -79,9 +79,6 @@ app.layout = html.Div([
         ],
             style={
                 'width': '100%'
-
-                # 'text-orientation' : 'upright'
-# ‘text-orientation’: ‘upright’
             }
         )
     ], style={'backgroundColor': '#003d66'}),
@@ -126,7 +123,6 @@ app.layout = html.Div([
                     'width': '99%',
                     'margin-left': '5px'
                 }
-
             )
         ]),
         html.Br(),
@@ -151,7 +147,7 @@ app.layout = html.Div([
 
         dcc.Interval(
             id='day-interval',
-            interval=10 * 60 * 1000,  # in milliseconds
+            interval=10 * 1000,  # in milliseconds
             n_intervals=0
         )
     ], style={
