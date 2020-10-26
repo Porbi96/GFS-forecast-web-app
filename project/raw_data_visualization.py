@@ -96,6 +96,19 @@ FORECAST_HOURS = [0,   3,   6,   9,   12,  15,  18,  21,  24,  27,
                   240, 252, 264, 276, 288, 300, 312, 324, 336, 348,
                   360, 372, 384]
 
+LEVELS = {
+    "Wind gust ground":         np.arange(1, 40, 1),        # [m/s]
+    "Wind 250hPa":              np.arange(1, 70, 2),        # [m/s]
+    "Temperature 2m":           np.arange(-30, 42, 1),      # ['C]
+    "Dew point 2m":             np.arange(-30, 42, 1),      # ['C]
+    "Wind 10m":                 np.arange(1, 30, 1),        # [m/s]
+    "Precipitation ground 6h":  np.arange(1, 41, 2),        # [kg/m^2 s]
+    "LI surface":               np.arange(-15, 15, 0.5),    # ['C]
+    "CAPE surface":             np.arange(100, 4000, 100),  # [J/kg]
+    "CIN surface":              np.arange(-300, 0, 20),     # [J/kg]
+    "Pressure sea lvl":         np.arange(950, 1060, 2)     # [hPa]
+}
+
 
 def choose_levels(chart: str):
     """
@@ -106,19 +119,6 @@ def choose_levels(chart: str):
 
     if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
         raise ValueError("Incorrect chart!")
-
-    arrange_levels = {
-        "Wind gust ground":         np.arange(1, 40, 1),        # [m/s]
-        "Wind 250hPa":              np.arange(1, 70, 2),        # [m/s]
-        "Temperature 2m":           np.arange(-30, 42, 1),      # ['C]
-        "Dew point 2m":             np.arange(-30, 42, 1),      # ['C]
-        "Wind 10m":                 np.arange(1, 30, 1),        # [m/s]
-        "Precipitation ground 6h":  np.arange(1, 41, 2),        # [kg/m^2 s]
-        "LI surface":               np.arange(-15, 15, 0.5),    # ['C]
-        "CAPE surface":             np.arange(100, 4000, 100),  # [J/kg]
-        "CIN surface":              np.arange(-300, 0, 20),     # [J/kg]
-        "Pressure sea lvl":         np.arange(950, 1060, 2)     # [hPa]
-    }
 
     arrange_cmap = {
         "Wind gust ground":         'BuPu',
@@ -133,7 +133,7 @@ def choose_levels(chart: str):
         "Pressure sea lvl":         'cool_r'
     }
 
-    levels = arrange_levels[chart]
+    levels = LEVELS[chart]
     cmap = arrange_cmap[chart]
 
     return levels, cmap
@@ -157,8 +157,13 @@ def gfs_scan_bands(filepath):
         csvfile.close()
 
 
-def gfs_download_newest_data():
-
+def gfs_download_newest_data(forecasts: List[int] = FORECAST_HOURS, extent: List[int] = EXTENT_POLAND):
+    """
+    Checks if new data is availale on NCEP servers and downloads it.
+    :param forecasts:
+    :param extent:
+    :return: Base date and hour of new data; flag if new data is downloaded completely.
+    """
     url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl"
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 
@@ -188,9 +193,9 @@ def gfs_download_newest_data():
         print("Downloading data... It might take some minutes.")
         is_new_data = True
 
-        for forecast in FORECAST_HOURS:
+        for forecast in forecasts:
             try:
-                gfs_get_raw_data(date, hour, forecast, EXTENT_POLAND)
+                gfs_get_raw_data(date, hour, forecast, extent)
             except EOFError:
                 print("Data is not prepared yet!")
                 is_new_data = False
@@ -198,7 +203,6 @@ def gfs_download_newest_data():
             except FileExistsError:
                 pass
 
-    # print("Data downloaded succesfully!")
     return date, hour, is_new_data
 
 
@@ -257,15 +261,11 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
     try:
         r = requests.get(url)
     except requests.exceptions.ConnectionError:
-        EOFError
+        raise EOFError
 
     with open(os.path.join(path, filename), 'wb') as f:
         f.write(r.content)
         f.close()
-        # for chunk in r.iter_content(chunk_size=1024*1024):
-        #     if chunk:
-        #         f.write(chunk)
-        # f.close()
 
     size = os.path.getsize(os.path.join(path, filename))
     if size > 10*1024:
@@ -382,6 +382,19 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
 
     data = convolve(matrix_resize(data, factor), np.ones([factor, factor]) / (factor ** 2))
 
+    # TEMP
+    # # ===============================================================================
+    # fig = plt.figure(figsize=(10.8, 7.2), dpi=200)
+    # plt.imshow(data, cmap='jet')
+    # init_date = datetime.strptime(f"{date[:4]}/{date[4:6]}/{date[6:]} {hour:02}:00", '%Y/%m/%d %H:%M')
+    # valid_date = init_date + timedelta(hours=forecast)
+    # plt.legend([],
+    #            title=f"{CHARTS_NAMES[chart]}\ninit:   {init_date.strftime('%Y/%m/%d %H:%M')} UTC\nvalid: {valid_date.strftime('%Y/%m/%d %H:%M')} UTC",
+    #            loc="upper left")
+    # fig.savefig("rawFilteredDataVis.png", bbox_inches='tight')
+    # plt.close(fig)
+    # # ===============================================================================
+
     # Prepare meshgrid
     x = np.linspace(left_lon, right_lon, data.shape[1])
     y = np.linspace(bottom_lat, top_lat, data.shape[0])
@@ -448,8 +461,8 @@ if __name__ == '__main__':
         # 1. Download the newest data from NOAA servers
         date, hour, is_new_data = gfs_download_newest_data()
 
-        # date = "20200830"
-        # hour = 6
+        # date = "20200918"
+        # hour = 12
         # is_new_data = True
 
         # 2. Prepare data for each chart, build charts and save .png pics

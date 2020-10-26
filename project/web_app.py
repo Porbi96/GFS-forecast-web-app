@@ -9,7 +9,7 @@ import flask
 
 from datetime import datetime, timedelta
 
-base_dir = f"{os.path.dirname(__file__)}\\..\\data\\pics\\"
+base_dir = f"{os.path.dirname(__file__)}/../data/pics/"
 static_image_route = '/static/'
 
 
