@@ -12,6 +12,37 @@ from datetime import datetime, timedelta
 base_dir = f"{os.path.dirname(__file__)}/../data/pics/"
 static_image_route = '/static/'
 
+PARAM_DESCRIPTIONS = {
+    "CAPE surface": [html.Strong("Convective available potential energy"),
+    """\nA measure of the amount of energy available for convection. CAPE is directly related to the maximum potential vertical speed within an updraft. Higher values indicate greater potential for severe weather. Observed values in thunderstorm environments often may exceed 1000 J/kg, and in extreme cases may exceed 5000 J/kg.
+    However, as with other indices or indicators, there are no threshold values above which severe weather becomes imminent """],
+
+    "CIN surface": [html.Strong("Convective inhibition"),
+    """\nA measure of the amount of energy needed in order to initiate convection. Values of CIN typically reflect the strength of the cap. They are obtained on a sounding by computing the area enclosed between the environmental temperature profile and the path of a rising air parcel, over the layer within which the latter is cooler than the former."""],
+
+    "Dew point 2m": [html.Strong("Dew point temperature"),
+    """\nA measure of atmospheric moisture. It is the temperature to which air must be cooled in order to reach saturation (assuming air pressure and moisture content are constant). A higher dew point indicates more moisture present in the air."""],
+
+    "LI surface": [html.Strong("Lifted index"),
+    """\nA common measure of atmospheric instability. Its value is obtained by computing the temperature that air near the ground would have if it were lifted to some higher level (around 5500m, usually) and comparing that temperature to the actual temperature at that level. Negative values indicate instability - the more negative, the more unstable the air is, and the stronger the updrafts are likely to be with any developing thunderstorms. 
+    However there are no "magic numbers" or threshold LI values below which severe weather becomes imminent. """],
+
+    "Pressure sea lvl": [html.Strong("Pressure"),
+    """\nThe exertion of force upon a surface by a fluid (e.g., the atmosphere) in contact with it. Here, reduced to sea level."""],
+
+    "Temperature 2m": [html.Strong("Temperature"),
+    """\nThe temperature is a measure of the internal energy that a substance contains. This is the most measured quantity in the atmosphere."""],
+
+    "Wind 10m": [html.Strong("Wind"),
+    """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
+
+    "Wind 250hPa": [html.Strong("Wind"),
+    """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
+
+    "Wind gust ground": [html.Strong("Wind gust"),
+    """\nRapid fluctuations in the wind speed with a variation of 10 knots (5,14 m/s) or more between peaks and lulls. The speed of the gust will be the maximum instantaneous wind speed."""],
+}
+
 
 def helper_path(path):
     return os.path.basename(os.path.normpath(path))
@@ -43,6 +74,8 @@ app.layout = html.Div([
             Charts will appear automatically. You can press right button on image and copy direct link to it or save it.
             
             Data is being downloaded and prepared just when it appears on NOAA's servers, usually every 6 hours.
+            
+            Parameters' descriptions were found at NOAA's National Weather Service's Glossary.
             
             Author: Jakub Poręba
             MIT License
@@ -132,6 +165,9 @@ app.layout = html.Div([
         ], style={
             'textAlign': 'center'
         }),
+        html.Br(),
+
+        html.Div(id='description', children=" ", style={'margin-left': '10px', 'white-space': 'pre-line'})
 
     ], style={
         'width': '30%',
@@ -147,7 +183,7 @@ app.layout = html.Div([
 
         dcc.Interval(
             id='day-interval',
-            interval=10 * 1000,  # in milliseconds
+            interval=5 * 60 * 1000,  # in milliseconds
             n_intervals=0
         )
     ], style={
@@ -156,6 +192,14 @@ app.layout = html.Div([
     })
 
 ], style={'backgroundColor': '#181a3d'})
+
+
+@app.callback(
+    dash.dependencies.Output("description", "children"),
+    [dash.dependencies.Input("chart-dropdown", "value")]
+)
+def update_description(chart):
+    return PARAM_DESCRIPTIONS[chart[:-4]]
 
 
 @app.callback(

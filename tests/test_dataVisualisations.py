@@ -1,5 +1,7 @@
+import os
 import unittest
 import numpy as np
+import datetime
 from project import raw_data_visualization as rdv
 
 
@@ -15,6 +17,17 @@ class TestRawDataVisualization(unittest.TestCase):
     def test_gfs_scan_bands_wrong_filepath(self):
         self.assertRaises(ValueError, lambda: rdv.gfs_scan_bands("../a/b/c.f000"))
 
+    def test_gfs_scan_bands_correct_input(self):
+        if os.path.isfile("bands.csv"):
+            os.remove("bands.csv")
+        rdv.gfs_scan_bands("testGrib.f000")
+        self.assertTrue(lambda: os.path.isfile("bands.csv"))
+
+    def test_download_newest_data(self):
+        date, hour, is_new_data = rdv.gfs_download_newest_data([0, 3])
+        self.assertEqual(date, datetime.date.today().strftime("%Y%m%d"))
+        self.assertTrue(is_new_data)
+
     def test_gfs_get_raw_data(self):
         self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data(20200816, 12, 0, rdv.EXTENT_POLAND))
         self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data("20200816", "12", 0, rdv.EXTENT_POLAND))
@@ -24,7 +37,7 @@ class TestRawDataVisualization(unittest.TestCase):
         self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("d0200811", 0, 0, rdv.EXTENT_POLAND))
         self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 0, 400, rdv.EXTENT_POLAND))
         self.assertRaises(TypeError, lambda: rdv.gfs_get_raw_data("20200816", 10, 0, 5))
-        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 10, 0, [5]))
+        self.assertRaises(ValueError, lambda: rdv.gfs_get_raw_data("20200816", 10, 0, [5, 10]))
 
     def test_matrix_resize_if_correct_resizing(self):
         array1 = np.array([[0, 1], [1, 0]])
@@ -45,6 +58,10 @@ class TestRawDataVisualization(unittest.TestCase):
         self.assertRaises(ValueError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 1000, "Temperature 2m"))
         self.assertRaises(ValueError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, "Temperature 2m",
                                                                               extent=[1, 1, 1]))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, "Temperature 2m",
+                                                                              extent=5))
+        self.assertRaises(TypeError, lambda: rdv.gfs_build_visualization_map("20200820", 12, 0, "Temperature 2m",
+                                                                              img_path=5))
         self.assertRaises(FileNotFoundError, lambda: rdv.gfs_build_visualization_map("30200820", 12, 0,
                                                                                      "Temperature 2m"))
 

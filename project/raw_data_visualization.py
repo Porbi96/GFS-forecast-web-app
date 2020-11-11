@@ -77,16 +77,16 @@ CHARTS_NONZERO = {
 }
 
 CHARTS_NAMES = {
-    "Wind gust ground":         "Wind gust at ground level",
-    "Wind 250hPa":              "Average wind at 250[hPa]",
-    "Temperature 2m":           "Average temperature at 2[m]",
-    "Dew point 2m":             "Average dew point at 2[m]",
-    "Wind 10m":                 "Average wind at 10[m]",
-    "Precipitation ground 6h":  "Cumulative precipitation\n(last 6h)",
-    "LI surface":               "Lifted index \nSurface based",
-    "CAPE surface":             "Convective available potential energy\nSurface based",
-    "CIN surface":              "Convective inhibition\nSurface based",
-    "Pressure sea lvl":         "Pressure reduced to mean sea level"
+    "Wind gust ground":         "Wind gust at ground level [m/s]",
+    "Wind 250hPa":              "Average wind at 250[hPa] [m/s]",
+    "Temperature 2m":           "Average temperature at 2[m] ['C]",
+    "Dew point 2m":             "Average dew point at 2[m] ['C]",
+    "Wind 10m":                 "Average wind at 10[m] [m/s]",
+    "Precipitation ground 6h":  "Cumulative precipitation\n(last 6h) [kg/m^2]",
+    "LI surface":               "Lifted index ['C] \nSurface based",
+    "CAPE surface":             "Convective available potential energy [J/kg]\nSurface based",
+    "CIN surface":              "Convective inhibition [J/kg]\nSurface based",
+    "Pressure sea lvl":         "Pressure reduced to mean sea level [hPa]"
 }
 
 FORECAST_HOURS = [0,   3,   6,   9,   12,  15,  18,  21,  24,  27,
@@ -186,9 +186,14 @@ def gfs_download_newest_data(forecasts: List[int] = FORECAST_HOURS, extent: List
     print("Found the newest data from: {date}, {hour} UTC.".format(date=date, hour=hour))
 
     path = os.path.join(BASE_DIR, "data/gfs/{}/{:02}z".format(date, hour))
-    if os.path.isdir(path) and len(os.listdir(path)) == len(FORECAST_HOURS):
+
+    if os.path.isdir(path) and [int(x[-3:]) for x in os.listdir(path)] == sorted(forecasts):
         print("Data is already downloaded!")
         is_new_data = False
+
+    # if os.path.isdir(path) and len(os.listdir(path)) == len(forecasts):
+    #     print("Data is already downloaded!")
+    #     is_new_data = False
     else:
         print("Downloading data... It might take some minutes.")
         is_new_data = True
@@ -365,9 +370,6 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
         wind_v = data_v.ReadAsArray() * 1.0
         data = np.sqrt(wind_u ** 2 + wind_v ** 2)
 
-        # wind_u = wind_u / data
-        # wind_v = wind_v / data
-
         wind_u = convolve(matrix_resize((wind_u / data), factor), np.ones([factor, factor]) / (factor ** 2))
         wind_v = convolve(matrix_resize((wind_v / data), factor), np.ones([factor, factor]) / (factor ** 2))
 
@@ -477,10 +479,10 @@ if __name__ == '__main__':
                         gfs_build_visualization_map(date, hour, forecast, key, img_path=tempdir)
                     except (FileNotFoundError, FileExistsError):
                         pass
-        print('''\n\n
-        =======================================================\n
-        =================={}==================
-        ====== Newest charts are prepared and available! ======\n
-        =======================================================\n
-        '''.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        time.sleep(30*60)
+            print('''\n\n
+            =======================================================\n
+            =================={}==================
+            ====== Newest charts are prepared and available! ======\n
+            =======================================================\n
+            '''.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        time.sleep(5*60)
