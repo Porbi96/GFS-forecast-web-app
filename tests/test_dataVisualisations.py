@@ -20,7 +20,7 @@ class TestRawDataVisualization(unittest.TestCase):
     def test_gfs_scan_bands_correct_input(self):
         if os.path.isfile("bands.csv"):
             os.remove("bands.csv")
-        rdv.gfs_scan_bands("testGrib.f000")
+        rdv.gfs_scan_bands(f"{rdv.BASE_DIR}/testGrib.f000")
         self.assertTrue(lambda: os.path.isfile("bands.csv"))
 
     def test_download_newest_data(self):
