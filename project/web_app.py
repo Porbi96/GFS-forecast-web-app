@@ -27,6 +27,9 @@ PARAM_DESCRIPTIONS = {
     """\nA common measure of atmospheric instability. Its value is obtained by computing the temperature that air near the ground would have if it were lifted to some higher level (around 5500m, usually) and comparing that temperature to the actual temperature at that level. Negative values indicate instability - the more negative, the more unstable the air is, and the stronger the updrafts are likely to be with any developing thunderstorms. 
     However there are no "magic numbers" or threshold LI values below which severe weather becomes imminent. """],
 
+    "Precipitation ground 6h": [html.Strong("Precipitation"),
+    """\n    The process where water vapor condenses in the atmosphere to form water droplets that fall to the Earth as rain, sleet, snow, hail, etc."""],
+
     "Pressure sea lvl": [html.Strong("Pressure"),
     """\nThe exertion of force upon a surface by a fluid (e.g., the atmosphere) in contact with it. Here, reduced to sea level."""],
 

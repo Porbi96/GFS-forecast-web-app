@@ -257,7 +257,13 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
             print("Deleting old file.")
             os.remove(os.path.join(path, filename))
 
-    url = f"https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t{hour:02}z.pgrb2.0p25.f{forecast:03}&all_lev=on&all_var=on&subregion=&leftlon={left_lon}&rightlon={right_lon}&toplat={top_lat}&bottomlat={bottom_lat}&dir=%2Fgfs.{date}%2F{hour:02}"
+    url = f"https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl?file=gfs.t{hour:02}z." \
+          f"pgrb2.0p25.f{forecast:03}" \
+          f"&all_lev=on&all_var=on&subregion=&leftlon={left_lon}" \
+          f"&rightlon={right_lon}&" \
+          f"toplat={top_lat}" \
+          f"&bottomlat={bottom_lat}&" \
+          f"dir=%2Fgfs.{date}%2F{hour:02}"
 
     print(f"\nTrying to get data from {date} hour {hour:02}, forecast:{forecast:03}...")
     print("URL: " + url)
@@ -461,11 +467,11 @@ def prepare_basemap_pickle(extent: List[int]):
 if __name__ == '__main__':
     while True:
         # 1. Download the newest data from NOAA servers
-        date, hour, is_new_data = gfs_download_newest_data()
+        # date, hour, is_new_data = gfs_download_newest_data()
 
-        # date = "20200918"
-        # hour = 12
-        # is_new_data = True
+        date = "20201012"
+        hour = 6
+        is_new_data = True
 
         # 2. Prepare data for each chart, build charts and save .png pics
         if is_new_data:
