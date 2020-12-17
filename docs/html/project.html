@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>project package &mdash; GFS Visualization Web App  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests package" href="tests.html" />
+    <link rel="prev" title="GFS-forecast-web-app" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GFS Visualization Web App
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GFS-forecast-web-app</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">project package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-project.raw_data_visualization">project.raw_data_visualization module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-project.web_app">project.web_app module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-project">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GFS Visualization Web App</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">GFS-forecast-web-app</a> &raquo;</li>
+        
+      <li>project package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/project.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="project-package">
+<h1>project package<a class="headerlink" href="#project-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-project.raw_data_visualization">
+<span id="project-raw-data-visualization-module"></span><h2>project.raw_data_visualization module<a class="headerlink" href="#module-project.raw_data_visualization" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="project.raw_data_visualization.choose_levels">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">choose_levels</code><span class="sig-paren">(</span><em>chart: str</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.choose_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chooses levels and colormap for visualization. User can specify these parameters here.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chart</strong> – chart name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">levels (ndarray) and colormap (string) for specified chart.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.gfs_build_visualization_map">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">gfs_build_visualization_map</code><span class="sig-paren">(</span><em>date: str, hour: int, forecast: int, chart: str, extent: typing.List[int] = [13, 25, 56, 48], img_path: str = 'C:\\Users\\Kuba\\Desktop\\Projekt_GFS\\GFS-forecast-web-app\\project/../data/pics/0'</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.gfs_build_visualization_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares data, makes map with visualization and saves it to file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>date</strong> – given base date as string in format “YYYYMMDD”</li>
+<li><strong>hour</strong> – given base hour (UTC) as integer (available: 0, 6, 12, 18)</li>
+<li><strong>forecast</strong> – given forecast hour as integer (available integers 0-392)</li>
+<li><strong>chart</strong> – str - name of chart to be visualized (one from CHARTS or CHARTS_NONZERO)</li>
+<li><strong>extent</strong> – given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]</li>
+<li><strong>img_path</strong> – path to directory where map will be saved.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.gfs_download_newest_data">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">gfs_download_newest_data</code><span class="sig-paren">(</span><em>forecasts: typing.List[int] = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 66, 72, 78, 84, 90, 96, 102, 108, 114, 120, 132, 144, 156, 168, 180, 192, 204, 216, 228, 240, 252, 264, 276, 288, 300, 312, 324, 336, 348, 360, 372, 384], extent: typing.List[int] = [13, 25, 56, 48]</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.gfs_download_newest_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if new data is availale on NCEP servers and downloads it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forecasts</strong> – list of forecast hours to download.</li>
+<li><strong>extent</strong> – list of geographical coordinates which are boundaries of forecasted area in format: [left_lon, right_lon, top_lat, bottom_lat].</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Base date (str: “YYYYMMDD”) and hour (int) of new data; flag (boolean) if new data is downloaded completely.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.gfs_get_raw_data">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">gfs_get_raw_data</code><span class="sig-paren">(</span><em>date: str, hour: int, forecast: int, extent: typing.List[int]</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.gfs_get_raw_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets raw GFS data for given date, hour and longitude and latitude extent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>date</strong> – given base date as string in format “YYYYMMDD”</li>
+<li><strong>hour</strong> – given base hour (UTC) as integer (available: 0, 6, 12, 18)</li>
+<li><strong>forecast</strong> – given forecast hour as integer (available integers 0-392)</li>
+<li><strong>extent</strong> – given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.gfs_scan_bands">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">gfs_scan_bands</code><span class="sig-paren">(</span><em>filepath: str</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.gfs_scan_bands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to scan through all bands in grib file and save their names into csv file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepath</strong> – path to particular grib file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.matrix_resize">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">matrix_resize</code><span class="sig-paren">(</span><em>data_in: numpy.ndarray</em>, <em>factor: int</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#project.raw_data_visualization.matrix_resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes map/matrix to bigger one. New matrix keeps data structure and values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_in</strong> – matrix to be resized</li>
+<li><strong>factor</strong> – multiplier</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new matrix (np.array) with size data_in.shape*factor</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="project.raw_data_visualization.prepare_basemap_pickle">
+<code class="descclassname">project.raw_data_visualization.</code><code class="descname">prepare_basemap_pickle</code><span class="sig-paren">(</span><em>extent: typing.List[int]</em><span class="sig-paren">)</span><a class="headerlink" href="#project.raw_data_visualization.prepare_basemap_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to load base map from a pickle file (or to make new one if not found), to increase speed of gfs_build_visualization_map function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extent</strong> – given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">basemap loaded from pickle file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-project.web_app">
+<span id="project-web-app-module"></span><h2>project.web_app module<a class="headerlink" href="#module-project.web_app" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="project.web_app.helper_path">
+<code class="descclassname">project.web_app.</code><code class="descname">helper_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.helper_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.serve_image">
+<code class="descclassname">project.web_app.</code><code class="descname">serve_image</code><span class="sig-paren">(</span><em>img_path</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.serve_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.toggle_modal">
+<code class="descclassname">project.web_app.</code><code class="descname">toggle_modal</code><span class="sig-paren">(</span><em>n1</em>, <em>n2</em>, <em>is_open</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.toggle_modal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_chart_dropdown">
+<code class="descclassname">project.web_app.</code><code class="descname">update_chart_dropdown</code><span class="sig-paren">(</span><em>day</em>, <em>hour</em>, <em>forecast</em>, <em>current_val</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_chart_dropdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_day_dropdown">
+<code class="descclassname">project.web_app.</code><code class="descname">update_day_dropdown</code><span class="sig-paren">(</span><em>n</em>, <em>current_val</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_day_dropdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_description">
+<code class="descclassname">project.web_app.</code><code class="descname">update_description</code><span class="sig-paren">(</span><em>chart</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_forecast_slider">
+<code class="descclassname">project.web_app.</code><code class="descname">update_forecast_slider</code><span class="sig-paren">(</span><em>day</em>, <em>hour</em>, <em>current_val</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_forecast_slider" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_hour_dropdown">
+<code class="descclassname">project.web_app.</code><code class="descname">update_hour_dropdown</code><span class="sig-paren">(</span><em>day</em>, <em>current_val</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_hour_dropdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="project.web_app.update_image_src">
+<code class="descclassname">project.web_app.</code><code class="descname">update_image_src</code><span class="sig-paren">(</span><em>day</em>, <em>hour</em>, <em>forecast</em>, <em>chart</em><span class="sig-paren">)</span><a class="headerlink" href="#project.web_app.update_image_src" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-project">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-project" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tests.html" class="btn btn-neutral float-right" title="tests package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="GFS-forecast-web-app" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Jakub Poreba
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

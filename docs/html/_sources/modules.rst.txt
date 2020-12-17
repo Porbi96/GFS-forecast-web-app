@@ -1,0 +1,8 @@
+GFS-forecast-web-app
+====================
+
+.. toctree::
+   :maxdepth: 4
+
+   project
+   tests

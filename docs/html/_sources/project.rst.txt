@@ -1,0 +1,30 @@
+project package
+===============
+
+Submodules
+----------
+
+project\.raw\_data\_visualization module
+----------------------------------------
+
+.. automodule:: project.raw_data_visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+project\.web\_app module
+------------------------
+
+.. automodule:: project.web_app
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: project
+    :members:
+    :undoc-members:
+    :show-inheritance:

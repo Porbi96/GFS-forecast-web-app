@@ -14,36 +14,36 @@ static_image_route = '/static/'
 
 PARAM_DESCRIPTIONS = {
     "CAPE surface": [html.Strong("Convective available potential energy"),
-    """\nA measure of the amount of energy available for convection. CAPE is directly related to the maximum potential vertical speed within an updraft. Higher values indicate greater potential for severe weather. Observed values in thunderstorm environments often may exceed 1000 J/kg, and in extreme cases may exceed 5000 J/kg.
-    However, as with other indices or indicators, there are no threshold values above which severe weather becomes imminent """],
+                     """\nA measure of the amount of energy available for convection. CAPE is directly related to the maximum potential vertical speed within an updraft. Higher values indicate greater potential for severe weather. Observed values in thunderstorm environments often may exceed 1000 J/kg, and in extreme cases may exceed 5000 J/kg.
+                     However, as with other indices or indicators, there are no threshold values above which severe weather becomes imminent """],
 
     "CIN surface": [html.Strong("Convective inhibition"),
-    """\nA measure of the amount of energy needed in order to initiate convection. Values of CIN typically reflect the strength of the cap. They are obtained on a sounding by computing the area enclosed between the environmental temperature profile and the path of a rising air parcel, over the layer within which the latter is cooler than the former."""],
+                    """\nA measure of the amount of energy needed in order to initiate convection. Values of CIN typically reflect the strength of the cap. They are obtained on a sounding by computing the area enclosed between the environmental temperature profile and the path of a rising air parcel, over the layer within which the latter is cooler than the former."""],
 
     "Dew point 2m": [html.Strong("Dew point temperature"),
-    """\nA measure of atmospheric moisture. It is the temperature to which air must be cooled in order to reach saturation (assuming air pressure and moisture content are constant). A higher dew point indicates more moisture present in the air."""],
+                     """\nA measure of atmospheric moisture. It is the temperature to which air must be cooled in order to reach saturation (assuming air pressure and moisture content are constant). A higher dew point indicates more moisture present in the air."""],
 
     "LI surface": [html.Strong("Lifted index"),
-    """\nA common measure of atmospheric instability. Its value is obtained by computing the temperature that air near the ground would have if it were lifted to some higher level (around 5500m, usually) and comparing that temperature to the actual temperature at that level. Negative values indicate instability - the more negative, the more unstable the air is, and the stronger the updrafts are likely to be with any developing thunderstorms. 
-    However there are no "magic numbers" or threshold LI values below which severe weather becomes imminent. """],
+                   """\nA common measure of atmospheric instability. Its value is obtained by computing the temperature that air near the ground would have if it were lifted to some higher level (around 5500m, usually) and comparing that temperature to the actual temperature at that level. Negative values indicate instability - the more negative, the more unstable the air is, and the stronger the updrafts are likely to be with any developing thunderstorms. 
+                   However there are no "magic numbers" or threshold LI values below which severe weather becomes imminent. """],
 
     "Precipitation ground 6h": [html.Strong("Precipitation"),
-    """\n    The process where water vapor condenses in the atmosphere to form water droplets that fall to the Earth as rain, sleet, snow, hail, etc."""],
+                                """\n    The process where water vapor condenses in the atmosphere to form water droplets that fall to the Earth as rain, sleet, snow, hail, etc."""],
 
     "Pressure sea lvl": [html.Strong("Pressure"),
-    """\nThe exertion of force upon a surface by a fluid (e.g., the atmosphere) in contact with it. Here, reduced to sea level."""],
+                         """\nThe exertion of force upon a surface by a fluid (e.g., the atmosphere) in contact with it. Here, reduced to sea level."""],
 
     "Temperature 2m": [html.Strong("Temperature"),
-    """\nThe temperature is a measure of the internal energy that a substance contains. This is the most measured quantity in the atmosphere."""],
+                       """\nThe temperature is a measure of the internal energy that a substance contains. This is the most measured quantity in the atmosphere."""],
 
     "Wind 10m": [html.Strong("Wind"),
-    """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
+                 """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
 
     "Wind 250hPa": [html.Strong("Wind"),
-    """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
+                    """\nThe horizontal motion of the air past a given point. Winds begin with differences in air pressures. Pressure that's higher at one place than another sets up a force pushing from the high toward the low pressure. The greater the difference in pressures, the stronger the force. The distance between the area of high pressure and the area of low pressure also determines how fast the moving air is accelerated."""],
 
     "Wind gust ground": [html.Strong("Wind gust"),
-    """\nRapid fluctuations in the wind speed with a variation of 10 knots (5,14 m/s) or more between peaks and lulls. The speed of the gust will be the maximum instantaneous wind speed."""],
+                         """\nRapid fluctuations in the wind speed with a variation of 10 knots (5,14 m/s) or more between peaks and lulls. The speed of the gust will be the maximum instantaneous wind speed."""],
 }
 
 
@@ -52,12 +52,12 @@ def helper_path(path):
 
 
 charts = {helper_path(day):
-            {helper_path(hour):
-                {helper_path(forecast):
-                    [helper_path(pic) for pic in
-                     glob.glob(f"{base_dir}{helper_path(day)}/{helper_path(hour)}/{helper_path(forecast)}/*.png")]
-                 for forecast in glob.glob(f"{base_dir}{helper_path(day)}/{helper_path(hour)}/*/")}
-             for hour in glob.glob(f"{base_dir}{helper_path(day)}/*/")}
+              {helper_path(hour):
+                   {helper_path(forecast):
+                        [helper_path(pic) for pic in
+                         glob.glob(f"{base_dir}{helper_path(day)}/{helper_path(hour)}/{helper_path(forecast)}/*.png")]
+                    for forecast in glob.glob(f"{base_dir}{helper_path(day)}/{helper_path(hour)}/*/")}
+               for hour in glob.glob(f"{base_dir}{helper_path(day)}/*/")}
           for day in glob.glob(f"{base_dir}*/")}
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])

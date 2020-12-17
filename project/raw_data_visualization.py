@@ -2,6 +2,8 @@ import os
 import re
 import time
 
+from numpy.core._multiarray_umath import ndarray
+
 os.environ["PROJ_LIB"] = "C:\\Python\\Anaconda\\Library\\share"
 import requests, gdal, csv
 import matplotlib.pyplot as plt
@@ -17,20 +19,20 @@ BASE_DIR = os.path.dirname(__file__) + "/.."
 EXTENT_POLAND = [13, 25, 56, 48]
 
 BANDS = {
-    "Wind gust ground": 11,        # [m/s]
+    "Wind gust ground": 11,  # [m/s]
     "Wind 250hPa": [146, 147],
     # "u-component 250hPa": 146,     # [m/s]
     # "v-component 250hPa": 147,     # [m/s]
-    "Temperature 2m": 415,         # ['C]
-    "Dew point 2m": 417,           # ['C]
+    "Temperature 2m": 415,  # ['C]
+    "Dew point 2m": 417,  # ['C]
     "Wind 10m": [420, 421],
     # "u-component 10m": 420,        # [m/s]
     # "v-component 10m": 421,        # [m/s]
     # "Precipitation ground": 424,   # [kg/m^2 s]
-    "LI surface": 432,             # ['C]
-    "CAPE surface": 433,           # [J/kg]
-    "CIN surface": 434,            # [J/kg]
-    "Pressure sea lvl": 520        # [Pa]
+    "LI surface": 432,  # ['C]
+    "CAPE surface": 433,  # [J/kg]
+    "CIN surface": 434,  # [J/kg]
+    "Pressure sea lvl": 520  # [Pa]
 }
 
 BANDS_NONZERO = {
@@ -56,7 +58,6 @@ CHARTS = {
     "Temperature 2m": "Temperature 2m",
     "Dew point 2m": "Dew point 2m",
     "Wind 10m": "Wind 10m",
-    # "Precipitation ground 6h": "Precipitation ground 6h",
     "LI surface": "LI surface",
     "CAPE surface": "CAPE surface",
     "CIN surface": "CIN surface",
@@ -77,71 +78,73 @@ CHARTS_NONZERO = {
 }
 
 CHARTS_NAMES = {
-    "Wind gust ground":         "Wind gust at ground level [m/s]",
-    "Wind 250hPa":              "Average wind at 250[hPa] [m/s]",
-    "Temperature 2m":           "Average temperature at 2[m] ['C]",
-    "Dew point 2m":             "Average dew point at 2[m] ['C]",
-    "Wind 10m":                 "Average wind at 10[m] [m/s]",
-    "Precipitation ground 6h":  "Cumulative precipitation\n(last 6h) [kg/m^2]",
-    "LI surface":               "Lifted index ['C] \nSurface based",
-    "CAPE surface":             "Convective available potential energy [J/kg]\nSurface based",
-    "CIN surface":              "Convective inhibition [J/kg]\nSurface based",
-    "Pressure sea lvl":         "Pressure reduced to mean sea level [hPa]"
+    "Wind gust ground": "Wind gust at ground level [m/s]",
+    "Wind 250hPa": "Average wind at 250[hPa] [m/s]",
+    "Temperature 2m": "Average temperature at 2[m] ['C]",
+    "Dew point 2m": "Average dew point at 2[m] ['C]",
+    "Wind 10m": "Average wind at 10[m] [m/s]",
+    "Precipitation ground 6h": "Cumulative precipitation\n(last 6h) [kg/m^2]",
+    "LI surface": "Lifted index ['C] \nSurface based",
+    "CAPE surface": "Convective available potential energy [J/kg]\nSurface based",
+    "CIN surface": "Convective inhibition [J/kg]\nSurface based",
+    "Pressure sea lvl": "Pressure reduced to mean sea level [hPa]"
 }
 
-FORECAST_HOURS = [0,   3,   6,   9,   12,  15,  18,  21,  24,  27,
-                  30,  33,  36,  39,  42,  45,  48,  51,  54,  57,
-                  60,  66,  72,  78,  84,  90,  96,  102, 108, 114,
+FORECAST_HOURS = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27,
+                  30, 33, 36, 39, 42, 45, 48, 51, 54, 57,
+                  60, 66, 72, 78, 84, 90, 96, 102, 108, 114,
                   120, 132, 144, 156, 168, 180, 192, 204, 216, 228,
                   240, 252, 264, 276, 288, 300, 312, 324, 336, 348,
                   360, 372, 384]
 
 LEVELS = {
-    "Wind gust ground":         np.arange(1, 40, 1),        # [m/s]
-    "Wind 250hPa":              np.arange(1, 70, 2),        # [m/s]
-    "Temperature 2m":           np.arange(-30, 42, 1),      # ['C]
-    "Dew point 2m":             np.arange(-30, 42, 1),      # ['C]
-    "Wind 10m":                 np.arange(1, 30, 1),        # [m/s]
-    "Precipitation ground 6h":  np.arange(1, 41, 2),        # [kg/m^2 s]
-    "LI surface":               np.arange(-15, 15, 0.5),    # ['C]
-    "CAPE surface":             np.arange(100, 4000, 100),  # [J/kg]
-    "CIN surface":              np.arange(-300, 0, 20),     # [J/kg]
-    "Pressure sea lvl":         np.arange(950, 1060, 2)     # [hPa]
+    "Wind gust ground": np.arange(1, 40, 1),  # [m/s]
+    "Wind 250hPa": np.arange(1, 70, 2),  # [m/s]
+    "Temperature 2m": np.arange(-30, 42, 1),  # ['C]
+    "Dew point 2m": np.arange(-30, 42, 1),  # ['C]
+    "Wind 10m": np.arange(1, 30, 1),  # [m/s]
+    "Precipitation ground 6h": np.arange(1, 41, 2),  # [kg/m^2 s]
+    "LI surface": np.arange(-15, 15, 0.5),  # ['C]
+    "CAPE surface": np.arange(100, 4000, 100),  # [J/kg]
+    "CIN surface": np.arange(-300, 0, 20),  # [J/kg]
+    "Pressure sea lvl": np.arange(950, 1060, 2)  # [hPa]
 }
 
 
 def choose_levels(chart: str):
     """
-    Chooses levels and cmap for visualization. User can specify these parameters here.
+    Chooses levels and colormap for visualization. User can specify these parameters here.
+
     :param chart: chart name
-    :return: levels and colormap for specified chart
+    :return: levels (ndarray) and colormap (string) for specified chart.
     """
 
     if chart not in CHARTS.keys() and chart not in CHARTS_NONZERO.keys():
         raise ValueError("Incorrect chart!")
 
     arrange_cmap = {
-        "Wind gust ground":         'BuPu',
-        "Wind 250hPa":              'BuPu',
-        "Temperature 2m":           'jet',
-        "Dew point 2m":             'jet',
-        "Wind 10m":                 'BuPu',
-        "Precipitation ground 6h":  'BuPu',
-        "LI surface":               'RdBu_r',
-        "CAPE surface":             'PuRd',
-        "CIN surface":              'BuPu_r',
-        "Pressure sea lvl":         'cool_r'
+        "Wind gust ground": 'BuPu',
+        "Wind 250hPa": 'BuPu',
+        "Temperature 2m": 'jet',
+        "Dew point 2m": 'jet',
+        "Wind 10m": 'BuPu',
+        "Precipitation ground 6h": 'BuPu',
+        "LI surface": 'RdBu_r',
+        "CAPE surface": 'PuRd',
+        "CIN surface": 'BuPu_r',
+        "Pressure sea lvl": 'cool_r'
     }
 
-    levels = LEVELS[chart]
-    cmap = arrange_cmap[chart]
+    levels: ndarray = LEVELS[chart]
+    cmap: str = arrange_cmap[chart]
 
     return levels, cmap
 
 
-def gfs_scan_bands(filepath):
+def gfs_scan_bands(filepath: str):
     """
     Helper function to scan through all bands in grib file and save their names into csv file.
+
     :param filepath: path to particular grib file.
     """
 
@@ -160,9 +163,10 @@ def gfs_scan_bands(filepath):
 def gfs_download_newest_data(forecasts: List[int] = FORECAST_HOURS, extent: List[int] = EXTENT_POLAND):
     """
     Checks if new data is availale on NCEP servers and downloads it.
-    :param forecasts:
-    :param extent:
-    :return: Base date and hour of new data; flag if new data is downloaded completely.
+
+    :param forecasts: list of forecast hours to download.
+    :param extent: list of geographical coordinates which are boundaries of forecasted area in format: [left_lon, right_lon, top_lat, bottom_lat].
+    :return: Base date (str: "YYYYMMDD") and hour (int) of new data; flag (boolean) if new data is downloaded completely.
     """
     url = "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl"
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -191,9 +195,6 @@ def gfs_download_newest_data(forecasts: List[int] = FORECAST_HOURS, extent: List
         print("Data is already downloaded!")
         is_new_data = False
 
-    # if os.path.isdir(path) and len(os.listdir(path)) == len(forecasts):
-    #     print("Data is already downloaded!")
-    #     is_new_data = False
     else:
         print("Downloading data... It might take some minutes.")
         is_new_data = True
@@ -214,8 +215,9 @@ def gfs_download_newest_data(forecasts: List[int] = FORECAST_HOURS, extent: List
 def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
     """
     Gets raw GFS data for given date, hour and longitude and latitude extent.
-    :param date: given date as string in format "YYYYMMDD"
-    :param hour: given hour (UTC) as integer (available: 0, 6, 12, 18)
+
+    :param date: given base date as string in format "YYYYMMDD"
+    :param hour: given base hour (UTC) as integer (available: 0, 6, 12, 18)
     :param forecast: given forecast hour as integer (available integers 0-392)
     :param extent: given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]
     """
@@ -279,7 +281,7 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
         f.close()
 
     size = os.path.getsize(os.path.join(path, filename))
-    if size > 10*1024:
+    if size > 10 * 1024:
         print("File {filename} downloaded and saved at {path}.".format(filename=filename, path=path))
     else:
         print("File {filename} not downloaded!".format(filename=filename))
@@ -288,7 +290,8 @@ def gfs_get_raw_data(date: str, hour: int, forecast: int, extent: List[int]):
 
 def matrix_resize(data_in: np.ndarray, factor: int) -> np.ndarray:
     """
-    Resizes map/matrix to bigger one.
+    Resizes map/matrix to bigger one. New matrix keeps data structure and values.
+
     :param data_in: matrix to be resized
     :param factor: multiplier
     :return: new matrix (np.array) with size data_in.shape*factor
@@ -299,10 +302,10 @@ def matrix_resize(data_in: np.ndarray, factor: int) -> np.ndarray:
     if factor <= 0:
         raise ValueError("Factor should be a positive integer!")
 
-    result = np.zeros(np.array(data_in.shape)*factor)
+    result = np.zeros(np.array(data_in.shape) * factor)
     for i in range(data_in.shape[0]):
         for j in range(data_in.shape[1]):
-            result[i*factor:(i+1)*factor, j*factor:(j+1)*factor] = data_in[i, j]
+            result[i * factor:(i + 1) * factor, j * factor:(j + 1) * factor] = data_in[i, j]
 
     return result
 
@@ -311,12 +314,13 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
                                 img_path: str = BASE_DIR + "/data/pics/0"):
     """
     Prepares data, makes map with visualization and saves it to file.
-    :param date:
-    :param hour:
-    :param forecast:
-    :param chart:
-    :param extent:
-    :param path:
+
+    :param date: given base date as string in format "YYYYMMDD"
+    :param hour: given base hour (UTC) as integer (available: 0, 6, 12, 18)
+    :param forecast: given forecast hour as integer (available integers 0-392)
+    :param chart: str - name of chart to be visualized (one from CHARTS or CHARTS_NONZERO)
+    :param extent: given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]
+    :param img_path: path to directory where map will be saved.
     """
 
     if type(date) != str:
@@ -390,7 +394,7 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
 
     data = convolve(matrix_resize(data, factor), np.ones([factor, factor]) / (factor ** 2))
 
-    # TEMP
+    # # USE FOR MAKE VISUALIZATION OF PARTIALLY PREPARED MAP
     # # ===============================================================================
     # fig = plt.figure(figsize=(10.8, 7.2), dpi=200)
     # plt.imshow(data, cmap='jet')
@@ -429,7 +433,9 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
     init_date = datetime.strptime(f"{date[:4]}/{date[4:6]}/{date[6:]} {hour:02}:00", '%Y/%m/%d %H:%M')
     valid_date = init_date + timedelta(hours=forecast)
 
-    plt.legend([], title=f"{CHARTS_NAMES[chart]}\ninit:   {init_date.strftime('%Y/%m/%d %H:%M')} UTC\nvalid: {valid_date.strftime('%Y/%m/%d %H:%M')} UTC", loc="upper left")
+    plt.legend([],
+               title=f"{CHARTS_NAMES[chart]}\ninit:   {init_date.strftime('%Y/%m/%d %H:%M')} UTC\nvalid: {valid_date.strftime('%Y/%m/%d %H:%M')} UTC",
+               loc="upper left")
 
     if chart in ["Wind 250hPa", "Wind 10m"]:
         plt.quiver(xx[::20, ::20], yy[::20, ::20], wind_u[::20, ::20], wind_v[::20, ::20], scale=50, width=0.001)
@@ -442,6 +448,12 @@ def gfs_build_visualization_map(date: str, hour: int, forecast: int, chart: str,
 
 
 def prepare_basemap_pickle(extent: List[int]):
+    """
+    Helper function to load base map from a pickle file (or to make new one if not found), to increase speed of gfs_build_visualization_map function.
+
+    :param extent: given extent as List[int] in format: [left_lon, right_lon, top_lat, bottom_lat]
+    :return: basemap loaded from pickle file.
+    """
     if not isinstance(extent, list):
         raise TypeError("Extent should be a type of list of integers!")
     if len(extent) != 4:
@@ -458,7 +470,8 @@ def prepare_basemap_pickle(extent: List[int]):
     if not os.path.isfile(filename):
         if not os.path.isdir(filedir):
             os.makedirs(filedir)
-        bmap = Basemap(llcrnrlon=left_lon, urcrnrlon=right_lon, llcrnrlat=bottom_lat, urcrnrlat=top_lat, projection='cyl', resolution='i')
+        bmap = Basemap(llcrnrlon=left_lon, urcrnrlon=right_lon, llcrnrlat=bottom_lat, urcrnrlat=top_lat,
+                       projection='cyl', resolution='i')
         pickle.dump(bmap, open(filename, 'wb'), -1)
 
     return pickle.load(open(filename, 'rb'))
@@ -491,4 +504,4 @@ if __name__ == '__main__':
             ====== Newest charts are prepared and available! ======\n
             =======================================================\n
             '''.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        time.sleep(5*60)
+        time.sleep(5 * 60)
