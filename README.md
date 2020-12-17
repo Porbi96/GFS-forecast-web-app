@@ -13,7 +13,9 @@ By default, it shows these parameters for teritory of Poland(easily changeable):
 - Ground wind gust
 - Surface based lifted index, convective available potential energy and convective inhibition
 
-You can check the [demo here](https://gfs-vis.herokuapp.com/)
+For functions' documentation open `docs/html/index.html`.
+
+You can check the [demo here](https://gfs-vis.herokuapp.com/).  
 Due to server limitations, the data is being updated only occasionally.
 
 ## Requirements
